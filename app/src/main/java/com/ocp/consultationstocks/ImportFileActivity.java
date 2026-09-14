@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,14 +32,13 @@ public class ImportFileActivity extends Activity {
     private static final int PICK_FILE = 100;
 
     private TextView fileNameText;
-    private TextView progressPercent;
     private TextView progressStatus;
     private TextView rowsStatus;
 
+    private CircularProgressView importProgress;
+
     private Button importButton;
     private Button selectFileButton;
-
-    private ProgressBar importProgress;
 
     private Uri selectedFileUri;
 
@@ -54,7 +52,6 @@ public class ImportFileActivity extends Activity {
         setContentView(R.layout.activity_import_file);
 
         fileNameText = findViewById(R.id.fileNameText);
-        progressPercent = findViewById(R.id.progressPercent);
         progressStatus = findViewById(R.id.progressStatus);
         rowsStatus = findViewById(R.id.rowsStatus);
 
@@ -65,7 +62,9 @@ public class ImportFileActivity extends Activity {
 
         Button cancelButton = findViewById(R.id.cancelButton);
 
-        selectFileButton.setOnClickListener(v -> choisirFichier());
+        selectFileButton.setOnClickListener(v ->
+                choisirFichier()
+        );
 
         importButton.setOnClickListener(v -> {
 
@@ -74,20 +73,28 @@ public class ImportFileActivity extends Activity {
             }
         });
 
-        cancelButton.setOnClickListener(v -> finish());
+        cancelButton.setOnClickListener(v ->
+                finish()
+        );
     }
 
     private void choisirFichier() {
 
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        Intent intent =
+                new Intent(Intent.ACTION_OPEN_DOCUMENT);
 
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.addCategory(
+                Intent.CATEGORY_OPENABLE
+        );
 
         intent.setType(
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         );
 
-        startActivityForResult(intent, PICK_FILE);
+        startActivityForResult(
+                intent,
+                PICK_FILE
+        );
     }
 
     @Override
@@ -112,19 +119,22 @@ public class ImportFileActivity extends Activity {
 
                 selectedFileUri = uri;
 
-                String fileName = getFileName(uri);
+                String fileName =
+                        getFileName(uri);
 
                 fileNameText.setText(fileName);
 
                 importButton.setEnabled(true);
 
-                progressPercent.setText("0 %");
+                importProgress.setProgress(0);
 
                 progressStatus.setText(
                         "Fichier prêt pour l'importation"
                 );
 
-                rowsStatus.setText("0 / 0 lignes");
+                rowsStatus.setText(
+                        "0 / 0 lignes"
+                );
             }
         }
     }
@@ -134,12 +144,15 @@ public class ImportFileActivity extends Activity {
         importButton.setEnabled(false);
         selectFileButton.setEnabled(false);
 
+        importProgress.setProgress(0);
+
         progressStatus.setText(
                 "Importation en cours..."
         );
 
-        progressPercent.setText("0 %");
-        rowsStatus.setText("0 / 0 lignes");
+        rowsStatus.setText(
+                "0 / 0 lignes"
+        );
 
         final Uri uri = selectedFileUri;
 
@@ -170,7 +183,8 @@ public class ImportFileActivity extends Activity {
         });
     }
 
-    private void importerExcel(Uri uri) throws Exception {
+    private void importerExcel(Uri uri)
+            throws Exception {
 
         java.io.File tempFile =
                 java.io.File.createTempFile(
@@ -181,17 +195,21 @@ public class ImportFileActivity extends Activity {
 
         try {
 
-            copierFichierDansCache(uri, tempFile);
+            copierFichierDansCache(
+                    uri,
+                    tempFile
+            );
 
             int totalRows =
-                    compterLignesExcel(tempFile);
+                    compterLignesExcel(
+                            tempFile
+                    );
 
-            runOnUiThread(() -> {
-
-                rowsStatus.setText(
-                        "0 / " + totalRows + " lignes"
-                );
-            });
+            runOnUiThread(() ->
+                    rowsStatus.setText(
+                            "0 / " + totalRows + " lignes"
+                    )
+            );
 
             StockDatabaseHelper dbHelper =
                     new StockDatabaseHelper(
@@ -216,13 +234,16 @@ public class ImportFileActivity extends Activity {
                         );
 
                 if (sheetEntry == null) {
+
                     throw new Exception(
                             "Feuille Excel introuvable"
                     );
                 }
 
                 InputStream inputStream =
-                        zipFile.getInputStream(sheetEntry);
+                        zipFile.getInputStream(
+                                sheetEntry
+                        );
 
                 XmlPullParserFactory factory =
                         XmlPullParserFactory.newInstance();
@@ -240,17 +261,25 @@ public class ImportFileActivity extends Activity {
                 ArrayList<String> row =
                         new ArrayList<>();
 
-                int eventType = parser.getEventType();
+                int eventType =
+                        parser.getEventType();
 
                 String currentCellReference = null;
                 String currentCellType = null;
                 String currentValue = "";
 
-                while (eventType != XmlPullParser.END_DOCUMENT) {
+                while (
+                        eventType
+                                != XmlPullParser.END_DOCUMENT
+                ) {
 
-                    if (eventType == XmlPullParser.START_TAG) {
+                    if (
+                            eventType
+                                    == XmlPullParser.START_TAG
+                    ) {
 
-                        String tag = parser.getName();
+                        String tag =
+                                parser.getName();
 
                         if ("row".equals(tag)) {
 
@@ -272,17 +301,22 @@ public class ImportFileActivity extends Activity {
 
                             currentValue = "";
 
-                        } else if ("v".equals(tag)
-                                || "t".equals(tag)) {
+                        } else if (
+                                "v".equals(tag)
+                                        || "t".equals(tag)
+                        ) {
 
                             currentValue =
                                     parser.nextText();
                         }
-                    }
 
-                    else if (eventType == XmlPullParser.END_TAG) {
+                    } else if (
+                            eventType
+                                    == XmlPullParser.END_TAG
+                    ) {
 
-                        String tag = parser.getName();
+                        String tag =
+                                parser.getName();
 
                         if ("c".equals(tag)) {
 
@@ -298,15 +332,27 @@ public class ImportFileActivity extends Activity {
                                             currentCellReference
                                     );
 
-                            while (row.size() <= column) {
+                            while (
+                                    row.size()
+                                            <= column
+                            ) {
+
                                 row.add("");
                             }
 
-                            row.set(column, value);
-                        }
+                            row.set(
+                                    column,
+                                    value
+                            );
 
-                        else if ("row".equals(tag)) {
+                        } else if (
+                                "row".equals(tag)
+                        ) {
 
+                            /*
+                             * La première ligne est
+                             * l'en-tête.
+                             */
                             if (importedRows > 0) {
 
                                 importerLigne(
@@ -326,10 +372,14 @@ public class ImportFileActivity extends Activity {
                             int percent = 0;
 
                             if (total > 0) {
+
                                 percent =
                                         (int)
-                                        ((current * 100L)
-                                                / total);
+                                                (
+                                                        current
+                                                                * 100L
+                                                                / total
+                                                );
                             }
 
                             final int finalPercent =
@@ -340,13 +390,10 @@ public class ImportFileActivity extends Activity {
 
                             runOnUiThread(() -> {
 
-                                importProgress.setProgress(
-                                        finalPercent
-                                );
-
-                                progressPercent.setText(
-                                        finalPercent + " %"
-                                );
+                                importProgress
+                                        .setProgress(
+                                                finalPercent
+                                        );
 
                                 rowsStatus.setText(
                                         current
@@ -362,7 +409,8 @@ public class ImportFileActivity extends Activity {
                         }
                     }
 
-                    eventType = parser.next();
+                    eventType =
+                            parser.next();
                 }
 
                 inputStream.close();
@@ -381,10 +429,11 @@ public class ImportFileActivity extends Activity {
 
                 importProgress.setProgress(100);
 
-                progressPercent.setText("100 %");
-
                 rowsStatus.setText(
-                        result + " / " + result + " lignes"
+                        result
+                                + " / "
+                                + result
+                                + " lignes"
                 );
 
                 progressStatus.setText(
@@ -500,18 +549,30 @@ public class ImportFileActivity extends Activity {
             ArrayList<String> row,
             int index) {
 
-        if (index < 0 || index >= row.size()) {
+        if (
+                index < 0
+                        || index >= row.size()
+        ) {
+
             return "";
         }
 
-        String value = row.get(index);
+        String value =
+                row.get(index);
 
-        return value == null ? "" : value.trim();
+        return value == null
+                ? ""
+                : value.trim();
     }
 
-    private double convertirDouble(String value) {
+    private double convertirDouble(
+            String value) {
 
-        if (value == null || value.trim().isEmpty()) {
+        if (
+                value == null
+                        || value.trim().isEmpty()
+        ) {
+
             return 0;
         }
 
@@ -522,7 +583,9 @@ public class ImportFileActivity extends Activity {
                             .replace(" ", "")
                             .replace(",", ".");
 
-            return Double.parseDouble(propre);
+            return Double.parseDouble(
+                    propre
+            );
 
         } catch (Exception e) {
 
@@ -540,6 +603,7 @@ public class ImportFileActivity extends Activity {
                         .openInputStream(uri);
 
         if (input == null) {
+
             throw new Exception(
                     "Impossible de lire le fichier"
             );
@@ -550,11 +614,16 @@ public class ImportFileActivity extends Activity {
                         destination
                 );
 
-        byte[] buffer = new byte[8192];
+        byte[] buffer =
+                new byte[8192];
 
         int length;
 
-        while ((length = input.read(buffer)) != -1) {
+        while (
+                (length =
+                        input.read(buffer))
+                        != -1
+        ) {
 
             output.write(
                     buffer,
@@ -584,6 +653,7 @@ public class ImportFileActivity extends Activity {
                     );
 
             if (sheetEntry == null) {
+
                 throw new Exception(
                         "Feuille Excel introuvable"
                 );
@@ -606,18 +676,25 @@ public class ImportFileActivity extends Activity {
 
             String line;
 
-            while ((line = reader.readLine())
-                    != null) {
+            while (
+                    (line =
+                            reader.readLine())
+                            != null
+            ) {
 
                 int position = 0;
 
-                while ((position =
-                        line.indexOf(
-                                "<row",
-                                position
-                        )) != -1) {
+                while (
+                        (position =
+                                line.indexOf(
+                                        "<row",
+                                        position
+                                ))
+                                != -1
+                ) {
 
                     count++;
+
                     position += 4;
                 }
             }
@@ -652,7 +729,9 @@ public class ImportFileActivity extends Activity {
         }
 
         InputStream input =
-                zipFile.getInputStream(entry);
+                zipFile.getInputStream(
+                        entry
+                );
 
         XmlPullParserFactory factory =
                 XmlPullParserFactory.newInstance();
@@ -677,28 +756,48 @@ public class ImportFileActivity extends Activity {
         int eventType =
                 parser.getEventType();
 
-        while (eventType != XmlPullParser.END_DOCUMENT) {
+        while (
+                eventType
+                        != XmlPullParser.END_DOCUMENT
+        ) {
 
-            if (eventType == XmlPullParser.START_TAG) {
+            if (
+                    eventType
+                            == XmlPullParser.START_TAG
+            ) {
 
-                if ("si".equals(parser.getName())) {
+                if (
+                        "si".equals(
+                                parser.getName()
+                        )
+                ) {
 
                     text.setLength(0);
                     insideSi = true;
 
-                } else if ("t".equals(parser.getName())
-                        && insideSi) {
+                } else if (
+                        "t".equals(
+                                parser.getName()
+                        )
+                                && insideSi
+                ) {
 
                     text.append(
                             parser.nextText()
                     );
                 }
-            }
 
-            else if (eventType == XmlPullParser.END_TAG) {
+            } else if (
+                    eventType
+                            == XmlPullParser.END_TAG
+            ) {
 
-                if ("si".equals(parser.getName())
-                        && insideSi) {
+                if (
+                        "si".equals(
+                                parser.getName()
+                        )
+                                && insideSi
+                ) {
 
                     result.put(
                             String.valueOf(index),
@@ -711,7 +810,8 @@ public class ImportFileActivity extends Activity {
                 }
             }
 
-            eventType = parser.next();
+            eventType =
+                    parser.next();
         }
 
         input.close();
@@ -744,28 +844,36 @@ public class ImportFileActivity extends Activity {
     private int colonneDepuisReference(
             String reference) {
 
-        if (reference == null
-                || reference.isEmpty()) {
+        if (
+                reference == null
+                        || reference.isEmpty()
+        ) {
 
             return 0;
         }
 
         int column = 0;
 
-        for (int i = 0;
-             i < reference.length();
-             i++) {
+        for (
+                int i = 0;
+                i < reference.length();
+                i++
+        ) {
 
             char c =
                     reference.charAt(i);
 
-            if (c >= 'A' && c <= 'Z') {
+            if (
+                    c >= 'A'
+                            && c <= 'Z'
+            ) {
 
                 column =
                         column * 26
                                 + (c - 'A' + 1);
 
             } else {
+
                 break;
             }
         }
@@ -777,18 +885,27 @@ public class ImportFileActivity extends Activity {
 
         String result = null;
 
-        if ("content".equals(uri.getScheme())) {
+        if (
+                "content".equals(
+                        uri.getScheme()
+                )
+        ) {
 
-            try (Cursor cursor =
-                         getContentResolver().query(
-                                 uri,
-                                 null,
-                                 null,
-                                 null,
-                                 null)) {
+            try (
+                    Cursor cursor =
+                            getContentResolver().query(
+                                    uri,
+                                    null,
+                                    null,
+                                    null,
+                                    null
+                            )
+            ) {
 
-                if (cursor != null
-                        && cursor.moveToFirst()) {
+                if (
+                        cursor != null
+                                && cursor.moveToFirst()
+                ) {
 
                     int nameIndex =
                             cursor.getColumnIndex(
