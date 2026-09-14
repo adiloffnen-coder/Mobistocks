@@ -26,110 +26,111 @@
     </LinearLayout>
 
     <!-- CONTENU -->
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:padding="24dp">
+        android:fillViewport="true"
+        android:scrollbars="none">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Importation des stocks"
-            android:textColor="@color/text_primary"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingTop="24dp"
+            android:paddingBottom="24dp">
 
-        <TextView
-            android:id="@+id/fileNameText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Aucun fichier sélectionné"
-            android:textColor="@color/text_secondary"
-            android:textSize="14sp" />
-
-        <!-- CERCLE DE PROGRESSION -->
-        <FrameLayout
-            android:layout_width="190dp"
-            android:layout_height="190dp"
-            android:layout_marginTop="30dp">
-
-            <ProgressBar
-                android:id="@+id/importProgress"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="170dp"
-                android:layout_height="170dp"
-                android:layout_gravity="center"
-                android:max="100"
-                android:progress="0"
-                android:rotation="-90" />
-
+            <!-- TITRE -->
             <TextView
-                android:id="@+id/progressPercent"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="0 %"
-                android:textColor="@color/green_primary"
-                android:textSize="28sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Importation des stocks"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
-        </FrameLayout>
+            <!-- NOM DU FICHIER -->
+            <TextView
+                android:id="@+id/fileNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Aucun fichier sélectionné"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/progressStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Prêt pour l'importation"
-            android:textColor="@color/text_primary"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            <!-- CERCLE DE PROGRESSION -->
+            <FrameLayout
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="28dp"
+                android:layout_gravity="center">
 
-        <TextView
-            android:id="@+id/rowsStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="0 / 0 lignes"
-            android:textColor="@color/text_secondary"
-            android:textSize="14sp" />
+                <com.ocp.consultationstocks.CircularProgressView
+                    android:id="@+id/importProgress"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp" />
 
-        <!-- BOUTON CHOISIR FICHIER -->
-        <Button
-            android:id="@+id/selectFileButton"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="28dp"
-            android:text="CHOISIR UN FICHIER"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:backgroundTint="@color/green_primary" />
+            </FrameLayout>
 
-        <!-- BOUTON IMPORTER -->
-        <Button
-            android:id="@+id/importButton"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="12dp"
-            android:text="IMPORTER"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:backgroundTint="@color/green_dark"
-            android:enabled="false" />
+            <!-- STATUT -->
+            <TextView
+                android:id="@+id/progressStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="Prêt pour l'importation"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-        <!-- BOUTON ANNULER -->
-        <Button
-            android:id="@+id/cancelButton"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="8dp"
-            android:text="ANNULER"
-            android:textColor="@color/text_secondary"
-            android:backgroundTint="@color/card_background" />
+            <!-- NOMBRE DE LIGNES -->
+            <TextView
+                android:id="@+id/rowsStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="0 / 0 lignes"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
 
-    </LinearLayout>
+            <!-- BOUTON CHOISIR FICHIER -->
+            <Button
+                android:id="@+id/selectFileButton"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="28dp"
+                android:text="CHOISIR UN FICHIER"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:backgroundTint="@color/green_primary" />
+
+            <!-- BOUTON IMPORTER -->
+            <Button
+                android:id="@+id/importButton"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:text="IMPORTER"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:backgroundTint="@color/green_dark"
+                android:enabled="false" />
+
+            <!-- BOUTON ANNULER -->
+            <Button
+                android:id="@+id/cancelButton"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:text="ANNULER"
+                android:textColor="@color/text_secondary"
+                android:backgroundTint="@color/card_background" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>
