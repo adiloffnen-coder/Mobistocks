@@ -6,16 +6,12 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.view.View;
 
 public class MainActivity extends Activity {
-
-    // =========================
-    // COULEURS
-    // =========================
 
     private static final int GREEN = Color.rgb(18, 151, 91);
     private static final int DARK_GREEN = Color.rgb(8, 116, 70);
@@ -38,19 +34,15 @@ public class MainActivity extends Activity {
         buildInterface();
     }
 
-    // ============================================================
-    // INTERFACE PRINCIPALE
-    // ============================================================
-
     private void buildInterface() {
 
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
         root.setBackgroundColor(BACKGROUND);
 
-        // --------------------------------------------------------
+        // =========================
         // BARRE SUPERIEURE
-        // --------------------------------------------------------
+        // =========================
 
         LinearLayout header = new LinearLayout(this);
         header.setOrientation(LinearLayout.HORIZONTAL);
@@ -58,7 +50,6 @@ public class MainActivity extends Activity {
         header.setPadding(dp(18), dp(10), dp(18), dp(10));
         header.setBackgroundColor(GREEN);
 
-        // Menu
         TextView menu = new TextView(this);
         menu.setText("☰");
         menu.setTextColor(WHITE);
@@ -70,7 +61,6 @@ public class MainActivity extends Activity {
                 new LinearLayout.LayoutParams(dp(60), dp(75))
         );
 
-        // Logo rond
         TextView logo = new TextView(this);
         logo.setText("🌿");
         logo.setTextColor(WHITE);
@@ -89,7 +79,6 @@ public class MainActivity extends Activity {
 
         header.addView(logo, logoParams);
 
-        // Texte société
         LinearLayout headerText = new LinearLayout(this);
         headerText.setOrientation(LinearLayout.VERTICAL);
         headerText.setGravity(Gravity.CENTER_VERTICAL);
@@ -124,7 +113,6 @@ public class MainActivity extends Activity {
                 )
         );
 
-        // Icône utilisateur
         TextView user = new TextView(this);
         user.setText("●");
         user.setTextColor(WHITE);
@@ -133,7 +121,7 @@ public class MainActivity extends Activity {
 
         GradientDrawable userBackground = new GradientDrawable();
         userBackground.setShape(GradientDrawable.OVAL);
-        userBackground.setStroke(dp(2), GREEN);
+        userBackground.setStroke(dp(2), WHITE);
         userBackground.setColor(Color.TRANSPARENT);
         user.setBackground(userBackground);
 
@@ -144,9 +132,9 @@ public class MainActivity extends Activity {
 
         root.addView(header);
 
-        // --------------------------------------------------------
-        // ZONE SCROLLABLE
-        // --------------------------------------------------------
+        // =========================
+        // CONTENU SCROLLABLE
+        // =========================
 
         ScrollView scrollView = new ScrollView(this);
         scrollView.setFillViewport(true);
@@ -160,9 +148,9 @@ public class MainActivity extends Activity {
                 dp(25)
         );
 
-        // --------------------------------------------------------
-        // BANNIERE BIENVENUE
-        // --------------------------------------------------------
+        // =========================
+        // BIENVENUE
+        // =========================
 
         LinearLayout welcomeBox = new LinearLayout(this);
         welcomeBox.setOrientation(LinearLayout.HORIZONTAL);
@@ -217,7 +205,6 @@ public class MainActivity extends Activity {
                 )
         );
 
-        // Illustration usine
         TextView factory = new TextView(this);
         factory.setText("🏭");
         factory.setTextSize(65);
@@ -233,9 +220,9 @@ public class MainActivity extends Activity {
 
         content.addView(welcomeBox);
 
-        // --------------------------------------------------------
+        // =========================
         // TABLEAU DE BORD
-        // --------------------------------------------------------
+        // =========================
 
         LinearLayout dashboard = new LinearLayout(this);
         dashboard.setOrientation(LinearLayout.VERTICAL);
@@ -262,7 +249,6 @@ public class MainActivity extends Activity {
 
         content.addView(dashboard, dashboardParams);
 
-        // Titre tableau de bord
         LinearLayout dashboardHeader = new LinearLayout(this);
         dashboardHeader.setOrientation(LinearLayout.HORIZONTAL);
         dashboardHeader.setGravity(Gravity.CENTER_VERTICAL);
@@ -290,7 +276,6 @@ public class MainActivity extends Activity {
 
         dashboard.addView(dashboardHeader);
 
-        // Date
         TextView date = new TextView(this);
         date.setText("▣   16 sept. 2025   •   10:24");
         date.setTextColor(TEXT_GRAY);
@@ -299,7 +284,6 @@ public class MainActivity extends Activity {
 
         dashboard.addView(date);
 
-        // Première ligne
         LinearLayout row1 = new LinearLayout(this);
         row1.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -329,7 +313,6 @@ public class MainActivity extends Activity {
 
         dashboard.addView(row1);
 
-        // Deuxième ligne
         LinearLayout row2 = new LinearLayout(this);
         row2.setOrientation(LinearLayout.HORIZONTAL);
         row2.setPadding(0, dp(10), 0, 0);
@@ -360,43 +343,38 @@ public class MainActivity extends Activity {
 
         dashboard.addView(row2);
 
-        // --------------------------------------------------------
-        // SYNTHESE DES STOCKS
-        // --------------------------------------------------------
+        // =========================
+        // SECTIONS
+        // =========================
 
         content.addView(
                 createSection(
                         "▤",
                         "Synthèse des stocks",
-                        "Vue d’ensemble des stocks par magasin, valeur,\nquantité et articles.",
+                        "Vue d’ensemble des stocks par magasin, valeur,\n" +
+                                "quantité et articles.",
                         GREEN,
                         Color.rgb(239, 249, 245)
                 )
         );
 
-        // --------------------------------------------------------
-        // MOUVEMENTS
-        // --------------------------------------------------------
-
         content.addView(
                 createSection(
                         "↻",
                         "Mouvements matières",
-                        "Historique des entrées, sorties et transferts\n(si disponible).",
+                        "Historique des entrées, sorties et transferts\n" +
+                                "(si disponible).",
                         Color.rgb(30, 120, 225),
                         Color.rgb(239, 247, 255)
                 )
         );
 
-        // --------------------------------------------------------
-        // IMPORTATION
-        // --------------------------------------------------------
-
         content.addView(
                 createSection(
                         "⇧",
                         "Importer des fichiers",
-                        "Importation des données depuis un fichier Excel\nou CSV.",
+                        "Importation des données depuis un fichier Excel\n" +
+                                "ou CSV.",
                         Color.rgb(120, 45, 210),
                         Color.rgb(247, 242, 255)
                 )
@@ -413,9 +391,9 @@ public class MainActivity extends Activity {
                 )
         );
 
-        // --------------------------------------------------------
-        // NAVIGATION INFERIEURE
-        // --------------------------------------------------------
+        // =========================
+        // NAVIGATION BASSE
+        // =========================
 
         LinearLayout bottomNavigation = new LinearLayout(this);
         bottomNavigation.setOrientation(LinearLayout.HORIZONTAL);
@@ -455,9 +433,9 @@ public class MainActivity extends Activity {
         setContentView(root);
     }
 
-    // ============================================================
-    // CARTE TABLEAU DE BORD
-    // ============================================================
+    // =========================
+    // CARTES
+    // =========================
 
     private LinearLayout createDashboardCard(
             String icon,
@@ -479,14 +457,19 @@ public class MainActivity extends Activity {
         GradientDrawable background = new GradientDrawable();
         background.setColor(backgroundColor);
         background.setCornerRadius(dp(17));
+
         background.setStroke(
                 dp(1),
-                Color.argb(35, 0, 0, 0)
+                Color.argb(
+                        35,
+                        Color.red(accentColor),
+                        Color.green(accentColor),
+                        Color.blue(accentColor)
+                )
         );
 
         card.setBackground(background);
 
-        // Icône
         TextView iconView = new TextView(this);
         iconView.setText(icon);
         iconView.setTextColor(WHITE);
@@ -507,7 +490,6 @@ public class MainActivity extends Activity {
                 )
         );
 
-        // Titre
         TextView titleView = new TextView(this);
         titleView.setText(title);
         titleView.setTextColor(DARK_BLUE);
@@ -517,7 +499,6 @@ public class MainActivity extends Activity {
 
         card.addView(titleView);
 
-        // Valeur
         TextView valueView = new TextView(this);
         valueView.setText(value);
         valueView.setTextColor(accentColor);
@@ -527,7 +508,6 @@ public class MainActivity extends Activity {
 
         card.addView(valueView);
 
-        // Description
         TextView descriptionView = new TextView(this);
         descriptionView.setText(description);
         descriptionView.setTextColor(TEXT_GRAY);
@@ -558,9 +538,9 @@ public class MainActivity extends Activity {
         return params;
     }
 
-    // ============================================================
+    // =========================
     // SECTIONS
-    // ============================================================
+    // =========================
 
     private LinearLayout createSection(
             String icon,
@@ -582,9 +562,15 @@ public class MainActivity extends Activity {
         GradientDrawable background = new GradientDrawable();
         background.setColor(backgroundColor);
         background.setCornerRadius(dp(18));
+
         background.setStroke(
                 dp(1),
-                Color.argb(45, accentColor)
+                Color.argb(
+                        45,
+                        Color.red(accentColor),
+                        Color.green(accentColor),
+                        Color.blue(accentColor)
+                )
         );
 
         section.setBackground(background);
@@ -604,7 +590,6 @@ public class MainActivity extends Activity {
 
         section.setLayoutParams(sectionParams);
 
-        // Icône
         TextView iconView = new TextView(this);
         iconView.setText(icon);
         iconView.setTextColor(WHITE);
@@ -625,7 +610,6 @@ public class MainActivity extends Activity {
                 )
         );
 
-        // Textes
         LinearLayout textLayout = new LinearLayout(this);
         textLayout.setOrientation(LinearLayout.VERTICAL);
         textLayout.setPadding(
@@ -664,7 +648,6 @@ public class MainActivity extends Activity {
                 )
         );
 
-        // Flèche
         TextView arrow = new TextView(this);
         arrow.setText("›");
         arrow.setTextColor(accentColor);
@@ -682,9 +665,9 @@ public class MainActivity extends Activity {
         return section;
     }
 
-    // ============================================================
-    // NAVIGATION BASSE
-    // ============================================================
+    // =========================
+    // NAVIGATION
+    // =========================
 
     private LinearLayout createNavigation(
             String icon,
@@ -721,9 +704,14 @@ public class MainActivity extends Activity {
 
         if (selected) {
             titleView.setTextColor(GREEN);
-            titleView.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            titleView.setTypeface(
+                    Typeface.DEFAULT,
+                    Typeface.BOLD
+            );
         } else {
-            titleView.setTextColor(Color.rgb(95, 117, 135));
+            titleView.setTextColor(
+                    Color.rgb(95, 117, 135)
+            );
         }
 
         item.addView(
