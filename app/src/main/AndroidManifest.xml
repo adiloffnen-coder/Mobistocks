@@ -25,6 +25,11 @@
             android:name=".StockSearchActivity"
             android:exported="false" />
 
+        <!-- Écran Importer des fichiers -->
+        <activity
+            android:name=".ImportFileActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>
