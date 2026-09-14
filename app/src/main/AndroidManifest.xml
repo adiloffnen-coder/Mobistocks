@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
@@ -7,6 +8,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- Écran principal -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -17,6 +19,11 @@
             </intent-filter>
 
         </activity>
+
+        <!-- Écran Synthèse des stocks -->
+        <activity
+            android:name=".StockSearchActivity"
+            android:exported="false" />
 
     </application>
 
