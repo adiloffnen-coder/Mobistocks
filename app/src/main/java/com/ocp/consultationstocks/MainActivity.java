@@ -12,11 +12,28 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Bouton Synthèse des stocks
         View synthese = findViewById(R.id.btnSynthese);
 
         if (synthese != null) {
             synthese.setOnClickListener(v -> {
-                Intent intent = new Intent(MainActivity.this, StockSearchActivity.class);
+                Intent intent = new Intent(
+                        MainActivity.this,
+                        StockSearchActivity.class
+                );
+                startActivity(intent);
+            });
+        }
+
+        // Bouton Importer des fichiers
+        View importer = findViewById(R.id.btnImporter);
+
+        if (importer != null) {
+            importer.setOnClickListener(v -> {
+                Intent intent = new Intent(
+                        MainActivity.this,
+                        ImportFileActivity.class
+                );
                 startActivity(intent);
             });
         }
