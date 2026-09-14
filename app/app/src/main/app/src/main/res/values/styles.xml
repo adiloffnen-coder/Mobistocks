@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.MobiStock"
+        parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <item name="android:fontFamily">sans</item>
+
+        <item name="android:windowLightStatusBar">false</item>
+
+        <item name="android:statusBarColor">#25D366</item>
+
+        <item name="android:navigationBarColor">#FFFFFF</item>
+
+        <item name="android:windowActionModeOverlay">true</item>
+
+        <item name="colorPrimary">#25D366</item>
+
+        <item name="colorPrimaryVariant">#1FAF56</item>
+
+        <item name="colorOnPrimary">#FFFFFF</item>
+
+    </style>
+
+</resources>
