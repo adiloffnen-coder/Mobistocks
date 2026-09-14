@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
         LinearLayout toolbar = new LinearLayout(this);
         toolbar.setOrientation(LinearLayout.HORIZONTAL);
         toolbar.setGravity(Gravity.CENTER_VERTICAL);
-        toolbar.setPadding(20, 12, 20, 12);
+        toolbar.setPadding(15, 8, 15, 8);
         toolbar.setBackgroundColor(GREEN);
 
         TextView menu = new TextView(this);
@@ -44,18 +44,14 @@ public class MainActivity extends Activity {
         menu.setTextColor(WHITE);
         menu.setGravity(Gravity.CENTER);
 
-        toolbar.addView(menu, new LinearLayout.LayoutParams(
-                55, 60
-        ));
+        toolbar.addView(menu, new LinearLayout.LayoutParams(55, 60));
 
         TextView logo = new TextView(this);
         logo.setText("🌿");
         logo.setTextSize(27);
         logo.setGravity(Gravity.CENTER);
 
-        toolbar.addView(logo, new LinearLayout.LayoutParams(
-                55, 60
-        ));
+        toolbar.addView(logo, new LinearLayout.LayoutParams(55, 60));
 
         LinearLayout companyLayout = new LinearLayout(this);
         companyLayout.setOrientation(LinearLayout.VERTICAL);
@@ -64,7 +60,7 @@ public class MainActivity extends Activity {
         TextView company = new TextView(this);
         company.setText("JORF FERTILIZERS COMPANY I");
         company.setTextColor(WHITE);
-        company.setTextSize(14);
+        company.setTextSize(13);
         company.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
         TextView appName = new TextView(this);
@@ -76,17 +72,19 @@ public class MainActivity extends Activity {
         companyLayout.addView(company);
         companyLayout.addView(appName);
 
-        toolbar.addView(companyLayout,
+        toolbar.addView(
+                companyLayout,
                 new LinearLayout.LayoutParams(
                         0,
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         1
-                ));
+                )
+        );
 
         root.addView(toolbar);
 
         // =========================
-        // CONTENU
+        // CONTENU DEFILABLE
         // =========================
 
         ScrollView scrollView = new ScrollView(this);
@@ -94,6 +92,10 @@ public class MainActivity extends Activity {
         LinearLayout content = new LinearLayout(this);
         content.setOrientation(LinearLayout.VERTICAL);
         content.setPadding(20, 22, 20, 25);
+
+        // =========================
+        // BIENVENUE
+        // =========================
 
         TextView welcome = new TextView(this);
         welcome.setText("Bonjour,\nBienvenue sur MobiStock");
@@ -112,7 +114,7 @@ public class MainActivity extends Activity {
         content.addView(subtitle);
 
         // =========================
-        // BLOC PRESENTATION
+        // PRESENTATION
         // =========================
 
         LinearLayout presentation = new LinearLayout(this);
@@ -133,8 +135,10 @@ public class MainActivity extends Activity {
         presentation.addView(factoryIcon);
 
         TextView presentationText = new TextView(this);
-        presentationText.setText("Suivez et consultez vos stocks\n"
-                + "simplement depuis votre mobile");
+        presentationText.setText(
+                "Suivez et consultez vos stocks\n" +
+                "simplement depuis votre mobile"
+        );
         presentationText.setTextColor(DARK);
         presentationText.setTextSize(16);
         presentationText.setGravity(Gravity.CENTER);
@@ -145,7 +149,7 @@ public class MainActivity extends Activity {
         content.addView(presentation);
 
         // =========================
-        // TITRE DASHBOARD
+        // TABLEAU DE BORD
         // =========================
 
         TextView dashboardTitle = new TextView(this);
@@ -157,41 +161,53 @@ public class MainActivity extends Activity {
 
         content.addView(dashboardTitle);
 
-        // Ligne 1
+        // Première ligne de cartes
         LinearLayout row1 = new LinearLayout(this);
         row1.setOrientation(LinearLayout.HORIZONTAL);
 
-        row1.addView(createCard(
-                "Valeur stock Actif",
-                "12 458 320 MAD"
-        ), weightParams());
+        row1.addView(
+                createCard(
+                        "Valeur stock Actif",
+                        "12 458 320 MAD"
+                ),
+                cardParams()
+        );
 
-        row1.addView(createCard(
-                "Stock dormant > 5 ans",
-                "2 846 500 MAD"
-        ), weightParams());
+        row1.addView(
+                createCard(
+                        "Stock dormant > 5 ans",
+                        "2 846 500 MAD"
+                ),
+                cardParams()
+        );
 
         content.addView(row1);
 
-        // Ligne 2
+        // Deuxième ligne de cartes
         LinearLayout row2 = new LinearLayout(this);
         row2.setOrientation(LinearLayout.HORIZONTAL);
         row2.setPadding(0, 12, 0, 0);
 
-        row2.addView(createCard(
-                "Nombre d'articles",
-                "12 487"
-        ), weightParams());
+        row2.addView(
+                createCard(
+                        "Nombre d'articles",
+                        "12 487"
+                ),
+                cardParams()
+        );
 
-        row2.addView(createCard(
-                "Valeur stock global",
-                "15 304 820 MAD"
-        ), weightParams());
+        row2.addView(
+                createCard(
+                        "Valeur stock global",
+                        "15 304 820 MAD"
+                ),
+                cardParams()
+        );
 
         content.addView(row2);
 
         // =========================
-        // SYNTHESE
+        // SYNTHESE DES STOCKS
         // =========================
 
         TextView synthesisTitle = new TextView(this);
@@ -203,23 +219,29 @@ public class MainActivity extends Activity {
 
         content.addView(synthesisTitle);
 
-        content.addView(createAction(
-                "📦",
-                "Consulter les stocks",
-                "Rechercher par code SAP ou code OCP"
-        ));
+        content.addView(
+                createAction(
+                        "📦",
+                        "Consulter les stocks",
+                        "Rechercher par code SAP ou code OCP"
+                )
+        );
 
-        content.addView(createAction(
-                "📊",
-                "Analyse des stocks",
-                "Visualiser les indicateurs et les valeurs"
-        ));
+        content.addView(
+                createAction(
+                        "📊",
+                        "Analyse des stocks",
+                        "Visualiser les indicateurs et les valeurs"
+                )
+        );
 
-        content.addView(createAction(
-                "🔄",
-                "Mouvements matières",
-                "Consulter les mouvements de stock"
-        ));
+        content.addView(
+                createAction(
+                        "🔄",
+                        "Mouvements matières",
+                        "Consulter les mouvements de stock"
+                )
+        );
 
         // =========================
         // IMPORTATION
@@ -234,35 +256,41 @@ public class MainActivity extends Activity {
 
         content.addView(importTitle);
 
-        content.addView(createAction(
-                "📁",
-                "Importer un fichier Excel",
-                "Charger un fichier .xlsx"
-        ));
+        content.addView(
+                createAction(
+                        "📁",
+                        "Importer un fichier Excel",
+                        "Charger un fichier .xlsx"
+                )
+        );
 
-        content.addView(createAction(
-                "📄",
-                "Importer un fichier CSV",
-                "Charger un fichier .csv"
-        ));
+        content.addView(
+                createAction(
+                        "📄",
+                        "Importer un fichier CSV",
+                        "Charger un fichier .csv"
+                )
+        );
 
-        // =========================
-        // NAVIGATION
-        // =========================
-
+        // Espace inférieur
         TextView bottomSpace = new TextView(this);
-        bottomSpace.setText("");
-        bottomSpace.setHeight(25);
+        bottomSpace.setHeight(30);
         content.addView(bottomSpace);
 
         scrollView.addView(content);
 
-        root.addView(scrollView,
+        root.addView(
+                scrollView,
                 new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         0,
                         1
-                ));
+                )
+        );
+
+        // =========================
+        // NAVIGATION INFERIEURE
+        // =========================
 
         LinearLayout bottomBar = new LinearLayout(this);
         bottomBar.setOrientation(LinearLayout.HORIZONTAL);
@@ -277,23 +305,26 @@ public class MainActivity extends Activity {
 
         root.addView(bottomBar);
 
+        // Afficher l'écran
         setContentView(root);
     }
 
     // =========================
-    // CARTE DASHBOARD
+    // CREATION DES CARTES
     // =========================
 
-    private TextView createCard(String title, String value) {
+    private LinearLayout createCard(String title, String value) {
 
         LinearLayout card = new LinearLayout(this);
         card.setOrientation(LinearLayout.VERTICAL);
-        card.setPadding(15, 18, 15, 18);
+        card.setGravity(Gravity.CENTER_VERTICAL);
+        card.setPadding(15, 12, 15, 12);
 
-        GradientDrawable bg = new GradientDrawable();
-        bg.setColor(WHITE);
-        bg.setCornerRadius(20);
-        card.setBackground(bg);
+        GradientDrawable background = new GradientDrawable();
+        background.setColor(WHITE);
+        background.setCornerRadius(20);
+
+        card.setBackground(background);
 
         TextView titleView = new TextView(this);
         titleView.setText(title);
@@ -303,39 +334,32 @@ public class MainActivity extends Activity {
         TextView valueView = new TextView(this);
         valueView.setText(value);
         valueView.setTextColor(DARK_GREEN);
-        valueView.setTextSize(17);
+        valueView.setTextSize(16);
         valueView.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         valueView.setPadding(0, 8, 0, 0);
 
         card.addView(titleView);
         card.addView(valueView);
 
-        TextView result = new TextView(this);
-        result.setText("");
-        result.setBackground(card.getBackground());
-
-        card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-
-        return result;
+        return card;
     }
 
-    private LinearLayout.LayoutParams weightParams() {
+    private LinearLayout.LayoutParams cardParams() {
+
         LinearLayout.LayoutParams params =
                 new LinearLayout.LayoutParams(
                         0,
-                        120,
+                        125,
                         1
                 );
+
         params.setMargins(5, 0, 5, 0);
+
         return params;
     }
 
     // =========================
-    // ACTION
+    // CREATION DES ACTIONS
     // =========================
 
     private LinearLayout createAction(
@@ -346,12 +370,13 @@ public class MainActivity extends Activity {
         LinearLayout action = new LinearLayout(this);
         action.setOrientation(LinearLayout.HORIZONTAL);
         action.setGravity(Gravity.CENTER_VERTICAL);
-        action.setPadding(15, 15, 15, 15);
+        action.setPadding(15, 12, 15, 12);
 
-        GradientDrawable bg = new GradientDrawable();
-        bg.setColor(WHITE);
-        bg.setCornerRadius(18);
-        action.setBackground(bg);
+        GradientDrawable background = new GradientDrawable();
+        background.setColor(WHITE);
+        background.setCornerRadius(18);
+
+        action.setBackground(background);
 
         LinearLayout.LayoutParams actionParams =
                 new LinearLayout.LayoutParams(
@@ -367,8 +392,10 @@ public class MainActivity extends Activity {
         iconView.setTextSize(27);
         iconView.setGravity(Gravity.CENTER);
 
-        action.addView(iconView,
-                new LinearLayout.LayoutParams(55, 60));
+        action.addView(
+                iconView,
+                new LinearLayout.LayoutParams(55, 60)
+        );
 
         LinearLayout texts = new LinearLayout(this);
         texts.setOrientation(LinearLayout.VERTICAL);
