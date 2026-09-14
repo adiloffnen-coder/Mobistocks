@@ -13,67 +13,110 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-    private final int GREEN = Color.rgb(37, 211, 102);
-    private final int DARK_GREEN = Color.rgb(20, 120, 65);
-    private final int DARK = Color.rgb(30, 30, 30);
-    private final int LIGHT = Color.rgb(245, 247, 246);
-    private final int WHITE = Color.WHITE;
-    private final int GRAY = Color.rgb(100, 100, 100);
+    // =========================
+    // COULEURS
+    // =========================
+
+    private static final int GREEN = Color.rgb(18, 151, 91);
+    private static final int DARK_GREEN = Color.rgb(8, 116, 70);
+    private static final int DARK_BLUE = Color.rgb(16, 55, 75);
+    private static final int TEXT_GRAY = Color.rgb(91, 115, 133);
+    private static final int BACKGROUND = Color.rgb(246, 250, 252);
+    private static final int WHITE = Color.WHITE;
+
+    private int dp(float value) {
+        return (int) (value * getResources().getDisplayMetrics().density + 0.5f);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getWindow().setStatusBarColor(DARK_GREEN);
+        getWindow().setNavigationBarColor(WHITE);
+
+        buildInterface();
+    }
+
+    // ============================================================
+    // INTERFACE PRINCIPALE
+    // ============================================================
+
+    private void buildInterface() {
+
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
-        root.setBackgroundColor(LIGHT);
+        root.setBackgroundColor(BACKGROUND);
 
-        // =========================
+        // --------------------------------------------------------
         // BARRE SUPERIEURE
-        // =========================
+        // --------------------------------------------------------
 
-        LinearLayout toolbar = new LinearLayout(this);
-        toolbar.setOrientation(LinearLayout.HORIZONTAL);
-        toolbar.setGravity(Gravity.CENTER_VERTICAL);
-        toolbar.setPadding(15, 8, 15, 8);
-        toolbar.setBackgroundColor(GREEN);
+        LinearLayout header = new LinearLayout(this);
+        header.setOrientation(LinearLayout.HORIZONTAL);
+        header.setGravity(Gravity.CENTER_VERTICAL);
+        header.setPadding(dp(18), dp(10), dp(18), dp(10));
+        header.setBackgroundColor(GREEN);
 
+        // Menu
         TextView menu = new TextView(this);
         menu.setText("☰");
-        menu.setTextSize(28);
         menu.setTextColor(WHITE);
+        menu.setTextSize(30);
         menu.setGravity(Gravity.CENTER);
 
-        toolbar.addView(menu, new LinearLayout.LayoutParams(55, 60));
+        header.addView(
+                menu,
+                new LinearLayout.LayoutParams(dp(60), dp(75))
+        );
 
+        // Logo rond
         TextView logo = new TextView(this);
         logo.setText("🌿");
-        logo.setTextSize(27);
+        logo.setTextColor(WHITE);
+        logo.setTextSize(38);
         logo.setGravity(Gravity.CENTER);
 
-        toolbar.addView(logo, new LinearLayout.LayoutParams(55, 60));
+        GradientDrawable logoBackground = new GradientDrawable();
+        logoBackground.setShape(GradientDrawable.OVAL);
+        logoBackground.setStroke(dp(2), WHITE);
+        logo.setBackground(logoBackground);
 
-        LinearLayout companyLayout = new LinearLayout(this);
-        companyLayout.setOrientation(LinearLayout.VERTICAL);
-        companyLayout.setGravity(Gravity.CENTER_VERTICAL);
+        LinearLayout.LayoutParams logoParams =
+                new LinearLayout.LayoutParams(dp(70), dp(70));
+
+        logoParams.setMargins(dp(5), 0, dp(15), 0);
+
+        header.addView(logo, logoParams);
+
+        // Texte société
+        LinearLayout headerText = new LinearLayout(this);
+        headerText.setOrientation(LinearLayout.VERTICAL);
+        headerText.setGravity(Gravity.CENTER_VERTICAL);
 
         TextView company = new TextView(this);
         company.setText("JORF FERTILIZERS COMPANY I");
         company.setTextColor(WHITE);
-        company.setTextSize(13);
+        company.setTextSize(15);
         company.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
         TextView appName = new TextView(this);
         appName.setText("MobiStock");
         appName.setTextColor(WHITE);
-        appName.setTextSize(20);
+        appName.setTextSize(28);
         appName.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-        companyLayout.addView(company);
-        companyLayout.addView(appName);
+        TextView appSubtitle = new TextView(this);
+        appSubtitle.setText("Gestion et consultation des stocks");
+        appSubtitle.setTextColor(WHITE);
+        appSubtitle.setTextSize(13);
 
-        toolbar.addView(
-                companyLayout,
+        headerText.addView(company);
+        headerText.addView(appName);
+        headerText.addView(appSubtitle);
+
+        header.addView(
+                headerText,
                 new LinearLayout.LayoutParams(
                         0,
                         LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -81,201 +124,283 @@ public class MainActivity extends Activity {
                 )
         );
 
-        root.addView(toolbar);
+        // Icône utilisateur
+        TextView user = new TextView(this);
+        user.setText("●");
+        user.setTextColor(WHITE);
+        user.setTextSize(27);
+        user.setGravity(Gravity.CENTER);
 
-        // =========================
-        // CONTENU DEFILABLE
-        // =========================
+        GradientDrawable userBackground = new GradientDrawable();
+        userBackground.setShape(GradientDrawable.OVAL);
+        userBackground.setStroke(dp(2), GREEN);
+        userBackground.setColor(Color.TRANSPARENT);
+        user.setBackground(userBackground);
+
+        header.addView(
+                user,
+                new LinearLayout.LayoutParams(dp(60), dp(60))
+        );
+
+        root.addView(header);
+
+        // --------------------------------------------------------
+        // ZONE SCROLLABLE
+        // --------------------------------------------------------
 
         ScrollView scrollView = new ScrollView(this);
+        scrollView.setFillViewport(true);
 
         LinearLayout content = new LinearLayout(this);
         content.setOrientation(LinearLayout.VERTICAL);
-        content.setPadding(20, 22, 20, 25);
+        content.setPadding(
+                dp(20),
+                dp(20),
+                dp(20),
+                dp(25)
+        );
 
-        // =========================
-        // BIENVENUE
-        // =========================
+        // --------------------------------------------------------
+        // BANNIERE BIENVENUE
+        // --------------------------------------------------------
+
+        LinearLayout welcomeBox = new LinearLayout(this);
+        welcomeBox.setOrientation(LinearLayout.HORIZONTAL);
+        welcomeBox.setGravity(Gravity.CENTER_VERTICAL);
+        welcomeBox.setPadding(
+                dp(25),
+                dp(22),
+                dp(10),
+                dp(22)
+        );
+
+        GradientDrawable welcomeBackground = new GradientDrawable();
+        welcomeBackground.setColor(Color.rgb(239, 247, 250));
+        welcomeBackground.setCornerRadius(dp(22));
+
+        welcomeBox.setBackground(welcomeBackground);
+
+        LinearLayout welcomeText = new LinearLayout(this);
+        welcomeText.setOrientation(LinearLayout.VERTICAL);
+
+        TextView hello = new TextView(this);
+        hello.setText("Bonjour,");
+        hello.setTextColor(DARK_BLUE);
+        hello.setTextSize(25);
+        hello.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
         TextView welcome = new TextView(this);
-        welcome.setText("Bonjour,\nBienvenue sur MobiStock");
-        welcome.setTextColor(DARK);
+        welcome.setText("Bienvenue sur MobiStock");
+        welcome.setTextColor(DARK_BLUE);
         welcome.setTextSize(25);
         welcome.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-        content.addView(welcome);
-
-        TextView subtitle = new TextView(this);
-        subtitle.setText("Gestion et consultation des stocks");
-        subtitle.setTextColor(GRAY);
-        subtitle.setTextSize(15);
-        subtitle.setPadding(0, 8, 0, 22);
-
-        content.addView(subtitle);
-
-        // =========================
-        // PRESENTATION
-        // =========================
-
-        LinearLayout presentation = new LinearLayout(this);
-        presentation.setOrientation(LinearLayout.VERTICAL);
-        presentation.setGravity(Gravity.CENTER);
-        presentation.setPadding(20, 25, 20, 25);
-
-        GradientDrawable presentationBg = new GradientDrawable();
-        presentationBg.setColor(WHITE);
-        presentationBg.setCornerRadius(22);
-        presentation.setBackground(presentationBg);
-
-        TextView factoryIcon = new TextView(this);
-        factoryIcon.setText("🏭");
-        factoryIcon.setTextSize(55);
-        factoryIcon.setGravity(Gravity.CENTER);
-
-        presentation.addView(factoryIcon);
-
-        TextView presentationText = new TextView(this);
-        presentationText.setText(
-                "Suivez et consultez vos stocks\n" +
-                "simplement depuis votre mobile"
+        TextView welcomeDescription = new TextView(this);
+        welcomeDescription.setText(
+                "Une vision claire de vos stocks,\n" +
+                "pour une meilleure gestion."
         );
-        presentationText.setTextColor(DARK);
-        presentationText.setTextSize(16);
-        presentationText.setGravity(Gravity.CENTER);
-        presentationText.setPadding(10, 10, 10, 5);
+        welcomeDescription.setTextColor(TEXT_GRAY);
+        welcomeDescription.setTextSize(15);
+        welcomeDescription.setPadding(0, dp(10), 0, 0);
 
-        presentation.addView(presentationText);
+        welcomeText.addView(hello);
+        welcomeText.addView(welcome);
+        welcomeText.addView(welcomeDescription);
 
-        content.addView(presentation);
+        welcomeBox.addView(
+                welcomeText,
+                new LinearLayout.LayoutParams(
+                        0,
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        1
+                )
+        );
 
-        // =========================
+        // Illustration usine
+        TextView factory = new TextView(this);
+        factory.setText("🏭");
+        factory.setTextSize(65);
+        factory.setGravity(Gravity.CENTER);
+
+        welcomeBox.addView(
+                factory,
+                new LinearLayout.LayoutParams(
+                        dp(145),
+                        dp(160)
+                )
+        );
+
+        content.addView(welcomeBox);
+
+        // --------------------------------------------------------
         // TABLEAU DE BORD
-        // =========================
+        // --------------------------------------------------------
+
+        LinearLayout dashboard = new LinearLayout(this);
+        dashboard.setOrientation(LinearLayout.VERTICAL);
+        dashboard.setPadding(
+                dp(15),
+                dp(18),
+                dp(15),
+                dp(15)
+        );
+
+        GradientDrawable dashboardBackground = new GradientDrawable();
+        dashboardBackground.setColor(WHITE);
+        dashboardBackground.setCornerRadius(dp(22));
+
+        dashboard.setBackground(dashboardBackground);
+
+        LinearLayout.LayoutParams dashboardParams =
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                );
+
+        dashboardParams.setMargins(0, dp(15), 0, 0);
+
+        content.addView(dashboard, dashboardParams);
+
+        // Titre tableau de bord
+        LinearLayout dashboardHeader = new LinearLayout(this);
+        dashboardHeader.setOrientation(LinearLayout.HORIZONTAL);
+        dashboardHeader.setGravity(Gravity.CENTER_VERTICAL);
+
+        TextView dashboardIcon = new TextView(this);
+        dashboardIcon.setText("▮▮▮");
+        dashboardIcon.setTextColor(DARK_BLUE);
+        dashboardIcon.setTextSize(22);
+
+        dashboardHeader.addView(
+                dashboardIcon,
+                new LinearLayout.LayoutParams(
+                        dp(55),
+                        dp(45)
+                )
+        );
 
         TextView dashboardTitle = new TextView(this);
         dashboardTitle.setText("Tableau de bord");
-        dashboardTitle.setTextColor(DARK);
-        dashboardTitle.setTextSize(21);
+        dashboardTitle.setTextColor(DARK_BLUE);
+        dashboardTitle.setTextSize(23);
         dashboardTitle.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        dashboardTitle.setPadding(0, 25, 0, 12);
 
-        content.addView(dashboardTitle);
+        dashboardHeader.addView(dashboardTitle);
 
-        // Première ligne de cartes
+        dashboard.addView(dashboardHeader);
+
+        // Date
+        TextView date = new TextView(this);
+        date.setText("▣   16 sept. 2025   •   10:24");
+        date.setTextColor(TEXT_GRAY);
+        date.setTextSize(13);
+        date.setGravity(Gravity.RIGHT);
+
+        dashboard.addView(date);
+
+        // Première ligne
         LinearLayout row1 = new LinearLayout(this);
         row1.setOrientation(LinearLayout.HORIZONTAL);
 
         row1.addView(
-                createCard(
+                createDashboardCard(
+                        "▦",
                         "Valeur stock Actif",
-                        "12 458 320 MAD"
+                        "12 458 320 MAD",
+                        "Stock en mouvement",
+                        Color.rgb(235, 249, 243),
+                        GREEN
                 ),
-                cardParams()
+                cardWeight()
         );
 
         row1.addView(
-                createCard(
-                        "Stock dormant > 5 ans",
-                        "2 846 500 MAD"
+                createDashboardCard(
+                        "◷",
+                        "Valeur stock Dormant > 5 ans",
+                        "2 846 500 MAD",
+                        "À surveiller",
+                        Color.rgb(255, 246, 236),
+                        Color.rgb(244, 133, 21)
                 ),
-                cardParams()
+                cardWeight()
         );
 
-        content.addView(row1);
+        dashboard.addView(row1);
 
-        // Deuxième ligne de cartes
+        // Deuxième ligne
         LinearLayout row2 = new LinearLayout(this);
         row2.setOrientation(LinearLayout.HORIZONTAL);
-        row2.setPadding(0, 12, 0, 0);
+        row2.setPadding(0, dp(10), 0, 0);
 
         row2.addView(
-                createCard(
-                        "Nombre d'articles",
-                        "12 487"
+                createDashboardCard(
+                        "□",
+                        "Nombre d’articles",
+                        "12 487",
+                        "Articles référencés",
+                        Color.rgb(237, 246, 255),
+                        Color.rgb(25, 119, 230)
                 ),
-                cardParams()
+                cardWeight()
         );
 
         row2.addView(
-                createCard(
+                createDashboardCard(
+                        "◎",
                         "Valeur stock global",
-                        "15 304 820 MAD"
+                        "15 304 820 MAD",
+                        "Total des stocks",
+                        Color.rgb(246, 241, 255),
+                        Color.rgb(118, 42, 210)
                 ),
-                cardParams()
+                cardWeight()
         );
 
-        content.addView(row2);
+        dashboard.addView(row2);
 
-        // =========================
+        // --------------------------------------------------------
         // SYNTHESE DES STOCKS
-        // =========================
-
-        TextView synthesisTitle = new TextView(this);
-        synthesisTitle.setText("Synthèse des stocks");
-        synthesisTitle.setTextColor(DARK);
-        synthesisTitle.setTextSize(21);
-        synthesisTitle.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        synthesisTitle.setPadding(0, 28, 0, 12);
-
-        content.addView(synthesisTitle);
+        // --------------------------------------------------------
 
         content.addView(
-                createAction(
-                        "📦",
-                        "Consulter les stocks",
-                        "Rechercher par code SAP ou code OCP"
+                createSection(
+                        "▤",
+                        "Synthèse des stocks",
+                        "Vue d’ensemble des stocks par magasin, valeur,\nquantité et articles.",
+                        GREEN,
+                        Color.rgb(239, 249, 245)
                 )
         );
 
-        content.addView(
-                createAction(
-                        "📊",
-                        "Analyse des stocks",
-                        "Visualiser les indicateurs et les valeurs"
-                )
-        );
+        // --------------------------------------------------------
+        // MOUVEMENTS
+        // --------------------------------------------------------
 
         content.addView(
-                createAction(
-                        "🔄",
+                createSection(
+                        "↻",
                         "Mouvements matières",
-                        "Consulter les mouvements de stock"
+                        "Historique des entrées, sorties et transferts\n(si disponible).",
+                        Color.rgb(30, 120, 225),
+                        Color.rgb(239, 247, 255)
                 )
         );
 
-        // =========================
+        // --------------------------------------------------------
         // IMPORTATION
-        // =========================
-
-        TextView importTitle = new TextView(this);
-        importTitle.setText("Importer des fichiers");
-        importTitle.setTextColor(DARK);
-        importTitle.setTextSize(21);
-        importTitle.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        importTitle.setPadding(0, 28, 0, 12);
-
-        content.addView(importTitle);
+        // --------------------------------------------------------
 
         content.addView(
-                createAction(
-                        "📁",
-                        "Importer un fichier Excel",
-                        "Charger un fichier .xlsx"
+                createSection(
+                        "⇧",
+                        "Importer des fichiers",
+                        "Importation des données depuis un fichier Excel\nou CSV.",
+                        Color.rgb(120, 45, 210),
+                        Color.rgb(247, 242, 255)
                 )
         );
-
-        content.addView(
-                createAction(
-                        "📄",
-                        "Importer un fichier CSV",
-                        "Charger un fichier .csv"
-                )
-        );
-
-        // Espace inférieur
-        TextView bottomSpace = new TextView(this);
-        bottomSpace.setHeight(30);
-        content.addView(bottomSpace);
 
         scrollView.addView(content);
 
@@ -288,145 +413,283 @@ public class MainActivity extends Activity {
                 )
         );
 
-        // =========================
+        // --------------------------------------------------------
         // NAVIGATION INFERIEURE
-        // =========================
+        // --------------------------------------------------------
 
-        LinearLayout bottomBar = new LinearLayout(this);
-        bottomBar.setOrientation(LinearLayout.HORIZONTAL);
-        bottomBar.setGravity(Gravity.CENTER);
-        bottomBar.setPadding(5, 8, 5, 8);
-        bottomBar.setBackgroundColor(WHITE);
+        LinearLayout bottomNavigation = new LinearLayout(this);
+        bottomNavigation.setOrientation(LinearLayout.HORIZONTAL);
+        bottomNavigation.setGravity(Gravity.CENTER);
+        bottomNavigation.setPadding(
+                dp(5),
+                dp(8),
+                dp(5),
+                dp(8)
+        );
+        bottomNavigation.setBackgroundColor(WHITE);
 
-        bottomBar.addView(createNavigation("⌂", "Accueil"));
-        bottomBar.addView(createNavigation("▣", "Stocks"));
-        bottomBar.addView(createNavigation("▥", "Analyse"));
-        bottomBar.addView(createNavigation("☰", "Menu"));
+        bottomNavigation.addView(
+                createNavigation("⌂", "Accueil", true)
+        );
 
-        root.addView(bottomBar);
+        bottomNavigation.addView(
+                createNavigation("□", "Stocks", false)
+        );
 
-        // Afficher l'écran
+        bottomNavigation.addView(
+                createNavigation("▮▮", "Analyse", false)
+        );
+
+        bottomNavigation.addView(
+                createNavigation("☰", "Menu", false)
+        );
+
+        root.addView(
+                bottomNavigation,
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        dp(78)
+                )
+        );
+
         setContentView(root);
     }
 
-    // =========================
-    // CREATION DES CARTES
-    // =========================
+    // ============================================================
+    // CARTE TABLEAU DE BORD
+    // ============================================================
 
-    private LinearLayout createCard(String title, String value) {
+    private LinearLayout createDashboardCard(
+            String icon,
+            String title,
+            String value,
+            String description,
+            int backgroundColor,
+            int accentColor) {
 
         LinearLayout card = new LinearLayout(this);
         card.setOrientation(LinearLayout.VERTICAL);
-        card.setGravity(Gravity.CENTER_VERTICAL);
-        card.setPadding(15, 12, 15, 12);
+        card.setPadding(
+                dp(16),
+                dp(14),
+                dp(12),
+                dp(12)
+        );
 
         GradientDrawable background = new GradientDrawable();
-        background.setColor(WHITE);
-        background.setCornerRadius(20);
+        background.setColor(backgroundColor);
+        background.setCornerRadius(dp(17));
+        background.setStroke(
+                dp(1),
+                Color.argb(35, 0, 0, 0)
+        );
 
         card.setBackground(background);
 
+        // Icône
+        TextView iconView = new TextView(this);
+        iconView.setText(icon);
+        iconView.setTextColor(WHITE);
+        iconView.setTextSize(25);
+        iconView.setGravity(Gravity.CENTER);
+
+        GradientDrawable iconBackground = new GradientDrawable();
+        iconBackground.setShape(GradientDrawable.OVAL);
+        iconBackground.setColor(accentColor);
+
+        iconView.setBackground(iconBackground);
+
+        card.addView(
+                iconView,
+                new LinearLayout.LayoutParams(
+                        dp(54),
+                        dp(54)
+                )
+        );
+
+        // Titre
         TextView titleView = new TextView(this);
         titleView.setText(title);
-        titleView.setTextColor(GRAY);
-        titleView.setTextSize(13);
-
-        TextView valueView = new TextView(this);
-        valueView.setText(value);
-        valueView.setTextColor(DARK_GREEN);
-        valueView.setTextSize(16);
-        valueView.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        valueView.setPadding(0, 8, 0, 0);
+        titleView.setTextColor(DARK_BLUE);
+        titleView.setTextSize(14);
+        titleView.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        titleView.setPadding(0, dp(10), 0, 0);
 
         card.addView(titleView);
+
+        // Valeur
+        TextView valueView = new TextView(this);
+        valueView.setText(value);
+        valueView.setTextColor(accentColor);
+        valueView.setTextSize(20);
+        valueView.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        valueView.setPadding(0, dp(5), 0, 0);
+
         card.addView(valueView);
+
+        // Description
+        TextView descriptionView = new TextView(this);
+        descriptionView.setText(description);
+        descriptionView.setTextColor(TEXT_GRAY);
+        descriptionView.setTextSize(12);
+        descriptionView.setPadding(0, dp(5), 0, 0);
+
+        card.addView(descriptionView);
 
         return card;
     }
 
-    private LinearLayout.LayoutParams cardParams() {
+    private LinearLayout.LayoutParams cardWeight() {
 
         LinearLayout.LayoutParams params =
                 new LinearLayout.LayoutParams(
                         0,
-                        125,
+                        dp(215),
                         1
                 );
 
-        params.setMargins(5, 0, 5, 0);
+        params.setMargins(
+                dp(4),
+                dp(4),
+                dp(4),
+                dp(4)
+        );
 
         return params;
     }
 
-    // =========================
-    // CREATION DES ACTIONS
-    // =========================
+    // ============================================================
+    // SECTIONS
+    // ============================================================
 
-    private LinearLayout createAction(
+    private LinearLayout createSection(
             String icon,
             String title,
-            String description) {
+            String description,
+            int accentColor,
+            int backgroundColor) {
 
-        LinearLayout action = new LinearLayout(this);
-        action.setOrientation(LinearLayout.HORIZONTAL);
-        action.setGravity(Gravity.CENTER_VERTICAL);
-        action.setPadding(15, 12, 15, 12);
-
-        GradientDrawable background = new GradientDrawable();
-        background.setColor(WHITE);
-        background.setCornerRadius(18);
-
-        action.setBackground(background);
-
-        LinearLayout.LayoutParams actionParams =
-                new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                );
-
-        actionParams.setMargins(0, 5, 0, 5);
-        action.setLayoutParams(actionParams);
-
-        TextView iconView = new TextView(this);
-        iconView.setText(icon);
-        iconView.setTextSize(27);
-        iconView.setGravity(Gravity.CENTER);
-
-        action.addView(
-                iconView,
-                new LinearLayout.LayoutParams(55, 60)
+        LinearLayout section = new LinearLayout(this);
+        section.setOrientation(LinearLayout.HORIZONTAL);
+        section.setGravity(Gravity.CENTER_VERTICAL);
+        section.setPadding(
+                dp(18),
+                dp(14),
+                dp(12),
+                dp(14)
         );
 
-        LinearLayout texts = new LinearLayout(this);
-        texts.setOrientation(LinearLayout.VERTICAL);
+        GradientDrawable background = new GradientDrawable();
+        background.setColor(backgroundColor);
+        background.setCornerRadius(dp(18));
+        background.setStroke(
+                dp(1),
+                Color.argb(45, accentColor)
+        );
+
+        section.setBackground(background);
+
+        LinearLayout.LayoutParams sectionParams =
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        dp(125)
+                );
+
+        sectionParams.setMargins(
+                0,
+                dp(12),
+                0,
+                0
+        );
+
+        section.setLayoutParams(sectionParams);
+
+        // Icône
+        TextView iconView = new TextView(this);
+        iconView.setText(icon);
+        iconView.setTextColor(WHITE);
+        iconView.setTextSize(30);
+        iconView.setGravity(Gravity.CENTER);
+
+        GradientDrawable iconBackground = new GradientDrawable();
+        iconBackground.setShape(GradientDrawable.OVAL);
+        iconBackground.setColor(accentColor);
+
+        iconView.setBackground(iconBackground);
+
+        section.addView(
+                iconView,
+                new LinearLayout.LayoutParams(
+                        dp(62),
+                        dp(62)
+                )
+        );
+
+        // Textes
+        LinearLayout textLayout = new LinearLayout(this);
+        textLayout.setOrientation(LinearLayout.VERTICAL);
+        textLayout.setPadding(
+                dp(15),
+                0,
+                dp(5),
+                0
+        );
 
         TextView titleView = new TextView(this);
         titleView.setText(title);
-        titleView.setTextColor(DARK);
-        titleView.setTextSize(17);
+        titleView.setTextColor(DARK_BLUE);
+        titleView.setTextSize(18);
         titleView.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-        TextView descView = new TextView(this);
-        descView.setText(description);
-        descView.setTextColor(GRAY);
-        descView.setTextSize(13);
-        descView.setPadding(0, 4, 0, 0);
+        TextView descriptionView = new TextView(this);
+        descriptionView.setText(description);
+        descriptionView.setTextColor(TEXT_GRAY);
+        descriptionView.setTextSize(13);
+        descriptionView.setPadding(
+                0,
+                dp(5),
+                0,
+                0
+        );
 
-        texts.addView(titleView);
-        texts.addView(descView);
+        textLayout.addView(titleView);
+        textLayout.addView(descriptionView);
 
-        action.addView(texts);
+        section.addView(
+                textLayout,
+                new LinearLayout.LayoutParams(
+                        0,
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        1
+                )
+        );
 
-        return action;
+        // Flèche
+        TextView arrow = new TextView(this);
+        arrow.setText("›");
+        arrow.setTextColor(accentColor);
+        arrow.setTextSize(38);
+        arrow.setGravity(Gravity.CENTER);
+
+        section.addView(
+                arrow,
+                new LinearLayout.LayoutParams(
+                        dp(35),
+                        dp(60)
+                )
+        );
+
+        return section;
     }
 
-    // =========================
-    // NAVIGATION BAS
-    // =========================
+    // ============================================================
+    // NAVIGATION BASSE
+    // ============================================================
 
     private LinearLayout createNavigation(
             String icon,
-            String title) {
+            String title,
+            boolean selected) {
 
         LinearLayout item = new LinearLayout(this);
         item.setOrientation(LinearLayout.VERTICAL);
@@ -434,27 +697,70 @@ public class MainActivity extends Activity {
 
         TextView iconView = new TextView(this);
         iconView.setText(icon);
-        iconView.setTextSize(22);
-        iconView.setTextColor(GREEN);
+        iconView.setTextSize(26);
         iconView.setGravity(Gravity.CENTER);
+
+        if (selected) {
+            iconView.setTextColor(GREEN);
+        } else {
+            iconView.setTextColor(Color.rgb(95, 117, 135));
+        }
+
+        item.addView(
+                iconView,
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        dp(38)
+                )
+        );
 
         TextView titleView = new TextView(this);
         titleView.setText(title);
-        titleView.setTextSize(11);
-        titleView.setTextColor(GRAY);
+        titleView.setTextSize(12);
         titleView.setGravity(Gravity.CENTER);
 
-        item.addView(iconView);
-        item.addView(titleView);
+        if (selected) {
+            titleView.setTextColor(GREEN);
+            titleView.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        } else {
+            titleView.setTextColor(Color.rgb(95, 117, 135));
+        }
 
-        LinearLayout.LayoutParams params =
+        item.addView(
+                titleView,
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        dp(25)
+                )
+        );
+
+        View indicator = new View(this);
+
+        if (selected) {
+            GradientDrawable indicatorBackground =
+                    new GradientDrawable();
+
+            indicatorBackground.setColor(GREEN);
+            indicatorBackground.setCornerRadius(dp(5));
+
+            indicator.setBackground(indicatorBackground);
+        }
+
+        item.addView(
+                indicator,
+                new LinearLayout.LayoutParams(
+                        selected ? dp(70) : dp(1),
+                        dp(4)
+                )
+        );
+
+        item.setLayoutParams(
                 new LinearLayout.LayoutParams(
                         0,
-                        60,
+                        LinearLayout.LayoutParams.MATCH_PARENT,
                         1
-                );
-
-        item.setLayoutParams(params);
+                )
+        );
 
         return item;
     }
