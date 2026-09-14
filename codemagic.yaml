@@ -10,7 +10,7 @@ workflows:
         script: |
           curl -L https://services.gradle.org/distributions/gradle-8.7-bin.zip -o /tmp/gradle.zip
           unzip -q /tmp/gradle.zip -d /tmp
-          /tmp/gradle-8.7/bin/gradle assembleDebug
+          /tmp/gradle-8.7/bin/gradle assembleDebug --stacktrace
 
     artifacts:
       - app/build/outputs/**/*.apk
