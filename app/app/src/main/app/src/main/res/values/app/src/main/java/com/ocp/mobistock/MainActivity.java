@@ -498,4 +498,458 @@ public class MainActivity extends Activity {
                 ),
                 new LinearLayout.LayoutParams(
                         0,
-                        
+                        90,
+                        1
+                )
+        );
+
+
+        menuBas.addView(
+                creerMenu(
+                        "▣",
+                        "Stocks",
+                        false
+                ),
+                new LinearLayout.LayoutParams(
+                        0,
+                        90,
+                        1
+                )
+        );
+
+
+        menuBas.addView(
+                creerMenu(
+                        "▤",
+                        "Analyse",
+                        false
+                ),
+                new LinearLayout.LayoutParams(
+                        0,
+                        90,
+                        1
+                )
+        );
+
+
+        menuBas.addView(
+                creerMenu(
+                        "☰",
+                        "Menu",
+                        false
+                ),
+                new LinearLayout.LayoutParams(
+                        0,
+                        90,
+                        1
+                )
+        );
+
+
+        principal.addView(
+                menuBas
+        );
+
+
+        setContentView(
+                principal
+        );
+    }
+
+
+    // ==============================
+    // CREER CARTE DASHBOARD
+    // ==============================
+
+    private LinearLayout creerCarte(
+
+            String titre,
+
+            String valeur,
+
+            String couleurFond,
+
+            String couleurTexte
+    ) {
+
+        LinearLayout carte =
+                new LinearLayout(this);
+
+        carte.setOrientation(
+                LinearLayout.VERTICAL
+        );
+
+        carte.setPadding(
+                22,
+                22,
+                22,
+                22
+        );
+
+        carte.setGravity(
+                Gravity.CENTER_VERTICAL
+        );
+
+
+        GradientDrawable fond =
+                new GradientDrawable();
+
+        fond.setColor(
+                Color.parseColor(couleurFond)
+        );
+
+        fond.setCornerRadius(
+                30
+        );
+
+        carte.setBackground(
+                fond
+        );
+
+
+        TextView titreVue =
+                new TextView(this);
+
+        titreVue.setText(
+                titre
+        );
+
+        titreVue.setTextSize(
+                12
+        );
+
+        titreVue.setTypeface(
+                null,
+                Typeface.BOLD
+        );
+
+        titreVue.setTextColor(
+                Color.parseColor("#555555")
+        );
+
+
+        TextView valeurVue =
+                new TextView(this);
+
+        valeurVue.setText(
+                valeur
+        );
+
+        valeurVue.setTextSize(
+                20
+        );
+
+        valeurVue.setTypeface(
+                null,
+                Typeface.BOLD
+        );
+
+        valeurVue.setTextColor(
+                Color.parseColor(couleurTexte)
+        );
+
+        valeurVue.setPadding(
+                0,
+                15,
+                0,
+                0
+        );
+
+
+        carte.addView(
+                titreVue
+        );
+
+        carte.addView(
+                valeurVue
+        );
+
+
+        return carte;
+    }
+
+
+    // ==============================
+    // CREER MODULE
+    // ==============================
+
+    private LinearLayout creerModule(
+
+            String icone,
+
+            String titre,
+
+            String description
+    ) {
+
+        LinearLayout module =
+                new LinearLayout(this);
+
+        module.setOrientation(
+                LinearLayout.HORIZONTAL
+        );
+
+        module.setGravity(
+                Gravity.CENTER_VERTICAL
+        );
+
+        module.setPadding(
+                28,
+                25,
+                28,
+                25
+        );
+
+
+        GradientDrawable fond =
+                new GradientDrawable();
+
+        fond.setColor(
+                Color.WHITE
+        );
+
+        fond.setCornerRadius(
+                28
+        );
+
+        fond.setStroke(
+                1,
+                Color.parseColor("#E5E5E5")
+        );
+
+        module.setBackground(
+                fond
+        );
+
+
+        TextView iconeVue =
+                new TextView(this);
+
+        iconeVue.setText(
+                icone
+        );
+
+        iconeVue.setTextSize(
+                28
+        );
+
+        iconeVue.setGravity(
+                Gravity.CENTER
+        );
+
+        module.addView(
+                iconeVue,
+                new LinearLayout.LayoutParams(
+                        75,
+                        80
+                )
+        );
+
+
+        LinearLayout textes =
+                new LinearLayout(this);
+
+        textes.setOrientation(
+                LinearLayout.VERTICAL
+        );
+
+        textes.setPadding(
+                20,
+                0,
+                0,
+                0
+        );
+
+
+        TextView titreVue =
+                new TextView(this);
+
+        titreVue.setText(
+                titre
+        );
+
+        titreVue.setTextSize(
+                17
+        );
+
+        titreVue.setTypeface(
+                null,
+                Typeface.BOLD
+        );
+
+        titreVue.setTextColor(
+                Color.parseColor("#202020")
+        );
+
+
+        TextView descriptionVue =
+                new TextView(this);
+
+        descriptionVue.setText(
+                description
+        );
+
+        descriptionVue.setTextSize(
+                13
+        );
+
+        descriptionVue.setTextColor(
+                Color.parseColor("#777777")
+        );
+
+        descriptionVue.setPadding(
+                0,
+                8,
+                0,
+                0
+        );
+
+
+        textes.addView(
+                titreVue
+        );
+
+        textes.addView(
+                descriptionVue
+        );
+
+
+        module.addView(
+                textes,
+                new LinearLayout.LayoutParams(
+                        0,
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        1
+                )
+        );
+
+
+        TextView fleche =
+                new TextView(this);
+
+        fleche.setText(
+                "›"
+        );
+
+        fleche.setTextSize(
+                32
+        );
+
+        fleche.setTextColor(
+                Color.parseColor(VERT)
+        );
+
+        module.addView(
+                fleche
+        );
+
+
+        return module;
+    }
+
+
+    // ==============================
+    // CREER MENU BAS
+    // ==============================
+
+    private LinearLayout creerMenu(
+
+            String icone,
+
+            String texte,
+
+            boolean actif
+    ) {
+
+        LinearLayout menu =
+                new LinearLayout(this);
+
+        menu.setOrientation(
+                LinearLayout.VERTICAL
+        );
+
+        menu.setGravity(
+                Gravity.CENTER
+        );
+
+
+        TextView iconeVue =
+                new TextView(this);
+
+        iconeVue.setText(
+                icone
+        );
+
+        iconeVue.setTextSize(
+                24
+        );
+
+        iconeVue.setGravity(
+                Gravity.CENTER
+        );
+
+        iconeVue.setTextColor(
+                actif
+                        ? Color.parseColor(VERT)
+                        : Color.GRAY
+        );
+
+
+        TextView texteVue =
+                new TextView(this);
+
+        texteVue.setText(
+                texte
+        );
+
+        texteVue.setTextSize(
+                11
+        );
+
+        texteVue.setGravity(
+                Gravity.CENTER
+        );
+
+        texteVue.setTextColor(
+                actif
+                        ? Color.parseColor(VERT)
+                        : Color.GRAY
+        );
+
+
+        menu.addView(
+                iconeVue
+        );
+
+        menu.addView(
+                texteVue
+        );
+
+
+        return menu;
+    }
+
+
+    // ==============================
+    // AJOUTER ESPACE
+    // ==============================
+
+    private void ajouterEspace(
+
+            LinearLayout layout,
+
+            int hauteur
+    ) {
+
+        View espace =
+                new View(this);
+
+        layout.addView(
+                espace,
+                new LinearLayout.LayoutParams(
+                        1,
+                        hauteur
+                )
+        );
+    }
+}
