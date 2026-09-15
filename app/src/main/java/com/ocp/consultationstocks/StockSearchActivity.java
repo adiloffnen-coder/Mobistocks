@@ -9,9 +9,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -21,113 +18,64 @@ public class StockSearchActivity extends Activity {
     private EditText searchEditText;
     private Button searchButton;
 
-    private final List<StockRow> stockRows = new ArrayList<>();
+    private List<ExcelDatabase.StockRow> stockRows =
+            new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_stock_search);
 
-        searchEditText = findViewById(R.id.searchEditText);
-        searchButton = findViewById(R.id.searchButton);
+        setContentView(
+                R.layout.activity_stock_search
+        );
 
-        loadStocks();
+        searchEditText =
+                findViewById(R.id.searchEditText);
 
-        searchButton.setOnClickListener(v -> searchStock());
+        searchButton =
+                findViewById(R.id.searchButton);
 
-        searchEditText.setOnEditorActionListener((v, actionId, event) -> {
-            searchStock();
-            return true;
-        });
+        // Charger le fichier Excel importé
+        loadExcel();
+
+        // Bouton rechercher
+        searchButton.setOnClickListener(v ->
+                searchStock()
+        );
     }
 
-    // ============================================================
-    // CHARGEMENT DU FICHIER Stocks.csv
-    // ============================================================
+    // =========================================================
+    // CHARGER EXCEL
+    // =========================================================
 
-    private void loadStocks() {
+    private void loadExcel() {
 
-        try {
+        ExcelDatabase database =
+                new ExcelDatabase(this);
 
-            InputStream inputStream = getAssets().open("Stocks.csv");
+        stockRows =
+                database.readExcel();
 
-            BufferedReader reader =
-                    new BufferedReader(
-                            new InputStreamReader(inputStream, "UTF-8")
-                    );
-
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-
-                if (line.trim().isEmpty()) {
-                    continue;
-                }
-
-                String[] c = line.split(";", -1);
-
-                if (c.length < 18) {
-                    continue;
-                }
-
-                // Ignore la ligne d'en-tête
-                String first = c[0].trim();
-
-                if (first.equalsIgnoreCase("SAP")
-                        || first.equalsIgnoreCase("Code SAP")
-                        || first.toLowerCase(Locale.ROOT).contains("code sap")) {
-                    continue;
-                }
-
-                StockRow row = new StockRow();
-
-                row.sap = clean(c[0]);
-                row.ocp = clean(c[1]);
-                row.designation = clean(c[2]);
-
-                row.magasin = clean(c[5]);
-                row.bin = clean(c[6]);
-
-                row.quantite = clean(c[8]);
-                row.unite = clean(c[9]);
-
-                row.prixUnitaire = clean(c[13]);
-                row.valeur = clean(c[14]);
-                row.devise = clean(c[15]);
-
-                row.dateEM = clean(c[16]);
-                row.derniereSortie = clean(c[17]);
-
-                /*
-                 * OL :
-                 * Si ton fichier possède une colonne OL, elle pourra
-                 * être ajoutée ici lorsque nous connaîtrons son numéro.
-                 */
-                row.ol = "";
-
-                stockRows.add(row);
-            }
-
-            reader.close();
-
-        } catch (Exception e) {
+        if (stockRows.isEmpty()) {
 
             Toast.makeText(
                     this,
-                    "Erreur de lecture de Stocks.csv",
+                    "Aucun fichier Excel importé.",
                     Toast.LENGTH_LONG
             ).show();
         }
     }
 
-    // ============================================================
-    // RECHERCHE SAP OU OCP
-    // ============================================================
+    // =========================================================
+    // RECHERCHE SAP / OCP
+    // =========================================================
 
     private void searchStock() {
 
         String recherche =
-                searchEditText.getText()
+                searchEditText
+                        .getText()
                         .toString()
                         .trim();
 
@@ -135,16 +83,17 @@ public class StockSearchActivity extends Activity {
 
             Toast.makeText(
                     this,
-                    "Saisissez un Code SAP ou Code OCP",
+                    "Saisissez un Code SAP ou Code OCP.",
                     Toast.LENGTH_SHORT
             ).show();
 
             return;
         }
 
-        List<StockRow> resultats = new ArrayList<>();
+        List<ExcelDatabase.StockRow> resultats =
+                new ArrayList<>();
 
-        for (StockRow row : stockRows) {
+        for (ExcelDatabase.StockRow row : stockRows) {
 
             if (row.sap.equalsIgnoreCase(recherche)
                     || row.ocp.equalsIgnoreCase(recherche)) {
@@ -153,58 +102,85 @@ public class StockSearchActivity extends Activity {
             }
         }
 
+        // Aucun résultat
         if (resultats.isEmpty()) {
 
             new AlertDialog.Builder(this)
                     .setMessage(
                             "Aucun stock disponible pour cet article."
                     )
-                    .setPositiveButton("OK", null)
+                    .setPositiveButton(
+                            "OK",
+                            null
+                    )
                     .show();
 
             return;
         }
 
+        // Afficher les résultats
         showResultDialog(resultats);
     }
 
-    // ============================================================
-    // FENÊTRE DE RESULTAT
-    // ============================================================
+    // =========================================================
+    // FENÊTRE RESULTAT
+    // =========================================================
 
-    private void showResultDialog(List<StockRow> resultats) {
+    private void showResultDialog(
+            List<ExcelDatabase.StockRow> resultats) {
 
-        View view = getLayoutInflater()
-                .inflate(R.layout.dialog_stock_result, null);
+        View view =
+                getLayoutInflater().inflate(
+                        R.layout.dialog_stock_result,
+                        null
+                );
 
         TextView designation =
-                view.findViewById(R.id.dialogDesignation);
+                view.findViewById(
+                        R.id.dialogDesignation
+                );
 
         TextView contenu =
-                view.findViewById(R.id.dialogContent);
+                view.findViewById(
+                        R.id.dialogContent
+                );
 
         TextView totalStock =
-                view.findViewById(R.id.dialogTotalStock);
+                view.findViewById(
+                        R.id.dialogTotalStock
+                );
 
         TextView valeurGlobale =
-                view.findViewById(R.id.dialogGlobalValue);
+                view.findViewById(
+                        R.id.dialogGlobalValue
+                );
 
         Button fermer =
-                view.findViewById(R.id.dialogClose);
+                view.findViewById(
+                        R.id.dialogClose
+                );
 
         // Désignation
         designation.setText(
                 resultats.get(0).designation
         );
 
-        StringBuilder texte = new StringBuilder();
+        StringBuilder texte =
+                new StringBuilder();
 
-        double total = 0;
-        double valeurTotale = 0;
+        double totalQuantite = 0;
+        double totalValeur = 0;
 
-        for (int i = 0; i < resultats.size(); i++) {
+        // =====================================================
+        // AFFICHER TOUTES LES LIGNES
+        // =====================================================
 
-            StockRow row = resultats.get(i);
+        for (int i = 0;
+             i < resultats.size();
+             i++) {
+
+            ExcelDatabase.StockRow row =
+                    resultats.get(i);
 
             if (i > 0) {
 
@@ -222,15 +198,15 @@ public class StockSearchActivity extends Activity {
                     .append("\n\n");
 
             texte.append("🏭  MAGASIN : ")
-                    .append(row.magasin);
+                    .append(row.magasin)
+                    .append("\n");
 
             if (!row.ol.isEmpty()) {
 
-                texte.append("     🏢  OL : ")
-                        .append(row.ol);
+                texte.append("🏢  OL : ")
+                        .append(row.ol)
+                        .append("\n");
             }
-
-            texte.append("\n");
 
             texte.append("📍  BIN : ")
                     .append(row.bin)
@@ -261,29 +237,44 @@ public class StockSearchActivity extends Activity {
             texte.append("↩️  Dernière sortie : ")
                     .append(row.derniereSortie);
 
-            total += parseNumber(row.quantite);
-            valeurTotale += parseNumber(row.valeur);
+            totalQuantite +=
+                    parseNumber(row.quantite);
+
+            totalValeur +=
+                    parseNumber(row.valeur);
         }
 
-        contenu.setText(texte.toString());
+        contenu.setText(
+                texte.toString()
+        );
+
+        // =====================================================
+        // TOTAUX
+        // =====================================================
 
         totalStock.setText(
                 "📦  TOTAL EN STOCK : "
-                        + formatNumber(total)
+                        + formatNumber(totalQuantite)
         );
 
         valeurGlobale.setText(
                 "💰  VALEUR GLOBALE : "
-                        + formatNumber(valeurTotale)
+                        + formatNumber(totalValeur)
                         + " MAD"
         );
+
+        // =====================================================
+        // DIALOGUE
+        // =====================================================
 
         AlertDialog dialog =
                 new AlertDialog.Builder(this)
                         .setView(view)
                         .create();
 
-        fermer.setOnClickListener(v -> dialog.dismiss());
+        fermer.setOnClickListener(v ->
+                dialog.dismiss()
+        );
 
         dialog.show();
 
@@ -296,31 +287,24 @@ public class StockSearchActivity extends Activity {
         }
     }
 
-    // ============================================================
-    // OUTILS
-    // ============================================================
-
-    private String clean(String value) {
-
-        if (value == null) {
-            return "";
-        }
-
-        return value.trim()
-                .replace("\"", "");
-    }
+    // =========================================================
+    // CONVERSION NOMBRE
+    // =========================================================
 
     private double parseNumber(String value) {
 
-        if (value == null || value.trim().isEmpty()) {
+        if (value == null
+                || value.trim().isEmpty()) {
+
             return 0;
         }
 
         try {
 
-            String v = value
-                    .replace(" ", "")
-                    .replace(",", ".");
+            String v =
+                    value
+                            .replace(" ", "")
+                            .replace(",", ".");
 
             return Double.parseDouble(v);
 
@@ -330,6 +314,10 @@ public class StockSearchActivity extends Activity {
         }
     }
 
+    // =========================================================
+    // FORMATAGE
+    // =========================================================
+
     private String formatNumber(double value) {
 
         return String.format(
@@ -337,30 +325,5 @@ public class StockSearchActivity extends Activity {
                 "%,.2f",
                 value
         );
-    }
-
-    // ============================================================
-    // CLASSE STOCK
-    // ============================================================
-
-    private static class StockRow {
-
-        String designation = "";
-        String sap = "";
-        String ocp = "";
-
-        String magasin = "";
-        String ol = "";
-        String bin = "";
-
-        String quantite = "";
-        String unite = "";
-
-        String prixUnitaire = "";
-        String valeur = "";
-        String devise = "";
-
-        String dateEM = "";
-        String derniereSortie = "";
     }
 }
