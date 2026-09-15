@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    android:padding="22dp">
+
+    <!-- TITRE ARTICLE -->
+    <TextView
+        android:id="@+id/dialogDesignation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TAMPON"
+        android:textColor="#20B86B"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:paddingBottom="10dp" />
+
+    <!-- RESULTATS -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:maxHeight="480dp">
+
+        <TextView
+            android:id="@+id/dialogContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#444444"
+            android:textSize="17sp"
+            android:lineSpacingExtra="3dp"
+            android:text="Code SAP : 80004327" />
+
+    </ScrollView>
+
+    <!-- SEPARATION -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:background="#AAAAAA" />
+
+    <!-- TOTAL STOCK -->
+    <TextView
+        android:id="@+id/dialogTotalStock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="📦  TOTAL EN STOCK : 4.00"
+        android:textColor="#20B86B"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" />
+
+    <!-- VALEUR GLOBALE -->
+    <TextView
+        android:id="@+id/dialogGlobalValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="💰  VALEUR GLOBALE : 164,681.12 MAD"
+        android:textColor="#20B86B"
+        android:textSize="21sp"
+        android:textStyle="bold"
+        android:paddingTop="5dp"
+        android:paddingBottom="15dp" />
+
+    <!-- BOUTON FERMER -->
+    <Button
+        android:id="@+id/dialogClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="FERMER"
+        android:textColor="#20B86B"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:backgroundTint="#FFFFFF" />
+
+</LinearLayout>
