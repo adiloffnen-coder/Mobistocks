@@ -61,7 +61,7 @@
                 android:textColor="@color/text_secondary"
                 android:textSize="14sp" />
 
-            <!-- CERCLE -->
+            <!-- CERCLE DE PROGRESSION -->
             <FrameLayout
                 android:layout_width="150dp"
                 android:layout_height="150dp"
@@ -70,12 +70,12 @@
 
                 <ProgressBar
                     android:id="@+id/importProgress"
-                    style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="130dp"
                     android:layout_height="130dp"
                     android:layout_gravity="center"
                     android:max="100"
                     android:progress="0"
+                    android:progressDrawable="@drawable/progress_circle"
                     android:rotation="-90" />
 
                 <TextView
@@ -101,7 +101,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <!-- LIGNES -->
+            <!-- NOMBRE DE LIGNES -->
             <TextView
                 android:id="@+id/rowsStatus"
                 android:layout_width="wrap_content"
@@ -111,7 +111,7 @@
                 android:textColor="@color/text_secondary"
                 android:textSize="14sp" />
 
-            <!-- CHOISIR -->
+            <!-- BOUTON CHOISIR -->
             <Button
                 android:id="@+id/selectFileButton"
                 android:layout_width="match_parent"
@@ -122,7 +122,7 @@
                 android:textStyle="bold"
                 android:backgroundTint="@color/green_primary" />
 
-            <!-- IMPORTER -->
+            <!-- BOUTON IMPORTER -->
             <Button
                 android:id="@+id/importButton"
                 android:layout_width="match_parent"
@@ -134,7 +134,7 @@
                 android:backgroundTint="@color/green_dark"
                 android:enabled="false" />
 
-            <!-- ANNULER -->
+            <!-- BOUTON ANNULER -->
             <Button
                 android:id="@+id/cancelButton"
                 android:layout_width="match_parent"
