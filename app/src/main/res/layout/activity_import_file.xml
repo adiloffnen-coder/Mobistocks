@@ -61,17 +61,32 @@
                 android:textColor="@color/text_secondary"
                 android:textSize="14sp" />
 
-            <!-- CERCLE DE PROGRESSION -->
+            <!-- CERCLE -->
             <FrameLayout
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="28dp"
                 android:layout_gravity="center">
 
-                <com.ocp.consultationstocks.CircularProgressView
+                <ProgressBar
                     android:id="@+id/importProgress"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_gravity="center"
+                    android:max="100"
+                    android:progress="0"
+                    android:rotation="-90" />
+
+                <TextView
+                    android:id="@+id/progressPercent"
                     android:layout_width="150dp"
-                    android:layout_height="150dp" />
+                    android:layout_height="150dp"
+                    android:gravity="center"
+                    android:text="0 %"
+                    android:textColor="@color/green_primary"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
 
             </FrameLayout>
 
@@ -86,7 +101,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <!-- NOMBRE DE LIGNES -->
+            <!-- LIGNES -->
             <TextView
                 android:id="@+id/rowsStatus"
                 android:layout_width="wrap_content"
@@ -96,7 +111,7 @@
                 android:textColor="@color/text_secondary"
                 android:textSize="14sp" />
 
-            <!-- BOUTON CHOISIR FICHIER -->
+            <!-- CHOISIR -->
             <Button
                 android:id="@+id/selectFileButton"
                 android:layout_width="match_parent"
@@ -107,7 +122,7 @@
                 android:textStyle="bold"
                 android:backgroundTint="@color/green_primary" />
 
-            <!-- BOUTON IMPORTER -->
+            <!-- IMPORTER -->
             <Button
                 android:id="@+id/importButton"
                 android:layout_width="match_parent"
@@ -119,7 +134,7 @@
                 android:backgroundTint="@color/green_dark"
                 android:enabled="false" />
 
-            <!-- BOUTON ANNULER -->
+            <!-- ANNULER -->
             <Button
                 android:id="@+id/cancelButton"
                 android:layout_width="match_parent"
