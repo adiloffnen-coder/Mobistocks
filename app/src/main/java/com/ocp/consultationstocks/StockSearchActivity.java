@@ -2,7 +2,11 @@ package com.ocp.consultationstocks;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,18 +40,12 @@ public class StockSearchActivity extends Activity {
         searchButton =
                 findViewById(R.id.searchButton);
 
-        // Charger le fichier Excel importé
         loadExcel();
 
-        // Bouton rechercher
         searchButton.setOnClickListener(v ->
                 searchStock()
         );
     }
-
-    // =========================================================
-    // CHARGER EXCEL
-    // =========================================================
 
     private void loadExcel() {
 
@@ -66,10 +64,6 @@ public class StockSearchActivity extends Activity {
             ).show();
         }
     }
-
-    // =========================================================
-    // RECHERCHE SAP / OCP
-    // =========================================================
 
     private void searchStock() {
 
@@ -102,7 +96,6 @@ public class StockSearchActivity extends Activity {
             }
         }
 
-        // Aucun résultat
         if (resultats.isEmpty()) {
 
             new AlertDialog.Builder(this)
@@ -118,13 +111,8 @@ public class StockSearchActivity extends Activity {
             return;
         }
 
-        // Afficher les résultats
         showResultDialog(resultats);
     }
-
-    // =========================================================
-    // FENÊTRE RESULTAT
-    // =========================================================
 
     private void showResultDialog(
             List<ExcelDatabase.StockRow> resultats) {
@@ -160,20 +148,15 @@ public class StockSearchActivity extends Activity {
                         R.id.dialogClose
                 );
 
-        // Désignation
         designation.setText(
                 resultats.get(0).designation
         );
 
-        StringBuilder texte =
-                new StringBuilder();
+        SpannableStringBuilder texte =
+                new SpannableStringBuilder();
 
         double totalQuantite = 0;
         double totalValeur = 0;
-
-        // =====================================================
-        // AFFICHER TOUTES LES LIGNES
-        // =====================================================
 
         for (int i = 0;
              i < resultats.size();
@@ -189,83 +172,112 @@ public class StockSearchActivity extends Activity {
                 );
             }
 
-            texte.append("▥  Code SAP : ")
-                    .append(row.sap)
-                    .append("\n");
+            appendLine(
+                    texte,
+                    "▥  Code SAP : ",
+                    row.sap
+            );
 
-            texte.append("🏷  Code OCP : ")
-                    .append(row.ocp)
-                    .append("\n\n");
+            appendLine(
+                    texte,
+                    "🏷  Code OCP : ",
+                    row.ocp
+            );
 
-            texte.append("🏭  MAGASIN : ")
-                    .append(row.magasin)
-                    .append("\n");
+            if (!row.division.isEmpty()) {
+
+                appendLine(
+                        texte,
+                        "🏢  DIVISION : ",
+                        row.division
+                );
+            }
+
+            // MAGASIN EN GRAS
+            appendBoldLine(
+                    texte,
+                    "🏭  MAGASIN : ",
+                    row.magasin
+            );
 
             if (!row.ol.isEmpty()) {
 
-                texte.append("🏢  OL : ")
-                        .append(row.ol)
-                        .append("\n");
+                appendLine(
+                        texte,
+                        "🏢  OL : ",
+                        row.ol
+                );
             }
 
-            texte.append("📍  BIN : ")
-                    .append(row.bin)
-                    .append("\n");
+            // BIN EN GRAS
+            appendBoldLine(
+                    texte,
+                    "📍  BIN : ",
+                    row.bin
+            );
 
-            texte.append("📦  Quantité : ")
-                    .append(row.quantite)
-                    .append(" ")
-                    .append(row.unite)
-                    .append("\n");
+            appendLine(
+                    texte,
+                    "📦  Quantité : ",
+                    row.quantite
+                            + " "
+                            + row.unite
+            );
 
-            texte.append("🪙  Prix unitaire : ")
-                    .append(row.prixUnitaire)
-                    .append(" ")
-                    .append(row.devise)
-                    .append("\n");
+            appendLine(
+                    texte,
+                    "🪙  Prix unitaire : ",
+                    row.prixUnitaire
+                            + " "
+                            + row.devise
+            );
 
-            texte.append("💰  Valeur : ")
-                    .append(row.valeur)
-                    .append(" ")
-                    .append(row.devise)
-                    .append("\n");
+            appendLine(
+                    texte,
+                    "💰  Valeur : ",
+                    row.valeur
+                            + " "
+                            + row.devise
+            );
 
-            texte.append("📅  Date EM : ")
-                    .append(row.dateEM)
-                    .append("\n");
+            appendLine(
+                    texte,
+                    "📅  Date EM : ",
+                    row.dateEM
+            );
 
-            texte.append("↩️  Dernière sortie : ")
-                    .append(row.derniereSortie);
+            appendLine(
+                    texte,
+                    "↩️  Dernière sortie : ",
+                    row.derniereSortie
+            );
 
             totalQuantite +=
-                    parseNumber(row.quantite);
+                    row.quantiteValue;
 
             totalValeur +=
-                    parseNumber(row.valeur);
+                    row.valeurValue;
         }
 
-        contenu.setText(
-                texte.toString()
-        );
-
-        // =====================================================
-        // TOTAUX
-        // =====================================================
+        contenu.setText(texte);
 
         totalStock.setText(
                 "📦  TOTAL EN STOCK : "
                         + formatNumber(totalQuantite)
         );
 
+        String devise = "MAD";
+
+        if (!resultats.get(0).devise.isEmpty()) {
+            devise = resultats.get(0).devise;
+        }
+
         valeurGlobale.setText(
                 "💰  VALEUR GLOBALE : "
                         + formatNumber(totalValeur)
-                        + " MAD"
+                        + " "
+                        + devise
         );
-
-        // =====================================================
-        // DIALOGUE
-        // =====================================================
 
         AlertDialog dialog =
                 new AlertDialog.Builder(this)
@@ -287,41 +299,43 @@ public class StockSearchActivity extends Activity {
         }
     }
 
-    // =========================================================
-    // CONVERSION NOMBRE
-    // =========================================================
+    private void appendLine(
+            SpannableStringBuilder builder,
+            String label,
+            String value) {
 
-    private double parseNumber(String value) {
-
-        if (value == null
-                || value.trim().isEmpty()) {
-
-            return 0;
-        }
-
-        try {
-
-            String v =
-                    value
-                            .replace(" ", "")
-                            .replace(",", ".");
-
-            return Double.parseDouble(v);
-
-        } catch (Exception e) {
-
-            return 0;
-        }
+        builder.append(label);
+        builder.append(value);
+        builder.append("\n");
     }
 
-    // =========================================================
-    // FORMATAGE
-    // =========================================================
+    private void appendBoldLine(
+            SpannableStringBuilder builder,
+            String label,
+            String value) {
+
+        int start =
+                builder.length();
+
+        builder.append(label);
+        builder.append(value);
+        builder.append("\n");
+
+        int end =
+                builder.length() - 1;
+
+        builder.setSpan(
+                new StyleSpan(Typeface.BOLD),
+                start,
+                end,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+    }
 
     private String formatNumber(double value) {
 
         return String.format(
-                Locale.US,
+                Locale.FRANCE,
                 "%,.2f",
                 value
         );
