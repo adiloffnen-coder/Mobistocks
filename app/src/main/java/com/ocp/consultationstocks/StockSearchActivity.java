@@ -148,8 +148,23 @@ public class StockSearchActivity extends Activity {
                         R.id.dialogClose
                 );
 
+        /*
+         * DESCRIPTION ARTICLE
+         * Elle vient maintenant de la colonne
+         * "Description article" du fichier Excel.
+         */
+        String descriptionArticle =
+                resultats.get(0).designation;
+
+        if (descriptionArticle == null
+                || descriptionArticle.trim().isEmpty()) {
+
+            descriptionArticle =
+                    "Description article non disponible";
+        }
+
         designation.setText(
-                resultats.get(0).designation
+                descriptionArticle.trim()
         );
 
         SpannableStringBuilder texte =
@@ -168,7 +183,7 @@ public class StockSearchActivity extends Activity {
             if (i > 0) {
 
                 texte.append(
-                        "\n\n────────────────────\n\n"
+                        "\n────────────────────\n\n"
                 );
             }
 
@@ -184,23 +199,33 @@ public class StockSearchActivity extends Activity {
                     row.ocp
             );
 
-            if (!row.division.isEmpty()) {
+            /*
+             * DIVISION EN GRAS
+             */
+            if (row.division != null
+                    && !row.division.trim().isEmpty()) {
 
-                appendLine(
+                appendBoldLine(
                         texte,
                         "🏢  DIVISION : ",
                         row.division
                 );
             }
 
-            // MAGASIN EN GRAS
+            /*
+             * MAGASIN EN GRAS
+             */
             appendBoldLine(
                     texte,
                     "🏭  MAGASIN : ",
                     row.magasin
             );
 
-            if (!row.ol.isEmpty()) {
+            /*
+             * OL
+             */
+            if (row.ol != null
+                    && !row.ol.trim().isEmpty()) {
 
                 appendLine(
                         texte,
@@ -209,7 +234,9 @@ public class StockSearchActivity extends Activity {
                 );
             }
 
-            // BIN EN GRAS
+            /*
+             * BIN EN GRAS
+             */
             appendBoldLine(
                     texte,
                     "📍  BIN : ",
@@ -259,19 +286,39 @@ public class StockSearchActivity extends Activity {
                     row.valeurValue;
         }
 
-        contenu.setText(texte);
+        /*
+         * On conserve le texte avec les parties en gras.
+         */
+        contenu.setText(
+                texte,
+                TextView.BufferType.SPANNABLE
+        );
 
+        /*
+         * TOTAL EN STOCK
+         */
         totalStock.setText(
                 "📦  TOTAL EN STOCK : "
                         + formatNumber(totalQuantite)
         );
 
+        /*
+         * DEVISE
+         */
         String devise = "MAD";
 
-        if (!resultats.get(0).devise.isEmpty()) {
-            devise = resultats.get(0).devise;
+        if (resultats.get(0).devise != null
+                && !resultats.get(0).devise.trim().isEmpty()) {
+
+            devise =
+                    resultats.get(0)
+                            .devise
+                            .trim();
         }
 
+        /*
+         * VALEUR GLOBALE
+         */
         valeurGlobale.setText(
                 "💰  VALEUR GLOBALE : "
                         + formatNumber(totalValeur)
@@ -299,16 +346,26 @@ public class StockSearchActivity extends Activity {
         }
     }
 
+    /*
+     * Ligne normale
+     */
     private void appendLine(
             SpannableStringBuilder builder,
             String label,
             String value) {
 
         builder.append(label);
-        builder.append(value);
+
+        if (value != null) {
+            builder.append(value);
+        }
+
         builder.append("\n");
     }
 
+    /*
+     * Ligne entièrement en GRAS
+     */
     private void appendBoldLine(
             SpannableStringBuilder builder,
             String label,
@@ -318,11 +375,15 @@ public class StockSearchActivity extends Activity {
                 builder.length();
 
         builder.append(label);
-        builder.append(value);
-        builder.append("\n");
+
+        if (value != null) {
+            builder.append(value);
+        }
 
         int end =
-                builder.length() - 1;
+                builder.length();
+
+        builder.append("\n");
 
         builder.setSpan(
                 new StyleSpan(Typeface.BOLD),
