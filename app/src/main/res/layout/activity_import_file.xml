@@ -63,28 +63,24 @@
 
             <!-- CERCLE DE PROGRESSION -->
             <FrameLayout
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="170dp"
+                android:layout_height="170dp"
                 android:layout_marginTop="28dp"
                 android:layout_gravity="center">
 
-                <ProgressBar
+                <com.ocp.consultationstocks.CircularProgressView
                     android:id="@+id/importProgress"
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
-                    android:layout_gravity="center"
-                    android:max="100"
-                    android:progress="0"
-                    android:progressDrawable="@drawable/progress_circle"
-                    android:rotation="-90" />
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:layout_gravity="center" />
 
                 <TextView
                     android:id="@+id/progressPercent"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="170dp"
+                    android:layout_height="170dp"
                     android:gravity="center"
                     android:text="0 %"
-                    android:textColor="#1677FF"
+                    android:textColor="#20D366"
                     android:textSize="26sp"
                     android:textStyle="bold" />
 
