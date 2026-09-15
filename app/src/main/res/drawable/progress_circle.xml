@@ -2,27 +2,31 @@
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Cercle gris de fond -->
     <item android:id="@android:id/background">
 
-        <shape android:shape="ring"
-            android:innerRadius="55dp"
-            android:thickness="8dp"
+        <shape
+            android:shape="ring"
+            android:innerRadius="52dp"
+            android:thickness="9dp"
             android:useLevel="false">
 
-            <solid android:color="#E1E5E3" />
+            <solid android:color="#D9DDE1" />
 
         </shape>
 
     </item>
 
+    <!-- Cercle bleu de progression -->
     <item android:id="@android:id/progress">
 
-        <shape android:shape="ring"
-            android:innerRadius="55dp"
-            android:thickness="8dp"
+        <shape
+            android:shape="ring"
+            android:innerRadius="52dp"
+            android:thickness="9dp"
             android:useLevel="true">
 
-            <solid android:color="#168A4A" />
+            <solid android:color="#1677FF" />
 
         </shape>
 
