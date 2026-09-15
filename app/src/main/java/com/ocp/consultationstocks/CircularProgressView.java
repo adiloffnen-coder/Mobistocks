@@ -9,17 +9,23 @@ import android.view.View;
 
 public class CircularProgressView extends View {
 
-    private Paint paint;
-    private RectF rectF;
+    private Paint backgroundPaint;
+    private Paint progressPaint;
+    private Paint textPaint;
 
-    private int progress = 0;
+    private float progress = 0;
+
+    private final int green = 0xFF20B86B;
+    private final int darkGray = 0xFF3A3A3A;
 
     public CircularProgressView(Context context) {
         super(context);
         init();
     }
 
-    public CircularProgressView(Context context, AttributeSet attrs) {
+    public CircularProgressView(
+            Context context,
+            AttributeSet attrs) {
         super(context, attrs);
         init();
     }
@@ -34,22 +40,48 @@ public class CircularProgressView extends View {
 
     private void init() {
 
-        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(10f);
-        paint.setStrokeCap(Paint.Cap.ROUND);
+        backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        backgroundPaint.setStyle(Paint.Style.STROKE);
+        backgroundPaint.setStrokeWidth(18);
+        backgroundPaint.setStrokeCap(Paint.Cap.ROUND);
+        backgroundPaint.setColor(darkGray);
 
-        rectF = new RectF();
+        progressPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        progressPaint.setStyle(Paint.Style.STROKE);
+        progressPaint.setStrokeWidth(18);
+        progressPaint.setStrokeCap(Paint.Cap.ROUND);
+        progressPaint.setColor(green);
+
+        textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        textPaint.setColor(green);
+        textPaint.setTextSize(42);
+        textPaint.setTypeface(
+                android.graphics.Typeface.DEFAULT_BOLD
+        );
+        textPaint.setTextAlign(Paint.Align.CENTER);
+
+        setLayerType(
+                View.LAYER_TYPE_SOFTWARE,
+                null
+        );
     }
 
-    public void setProgress(int value) {
+    public void setProgress(float value) {
 
-        progress = Math.max(0, Math.min(100, value));
+        if (value < 0) {
+            value = 0;
+        }
+
+        if (value > 100) {
+            value = 100;
+        }
+
+        progress = value;
 
         invalidate();
     }
 
-    public int getProgress() {
+    public float getProgress() {
         return progress;
     }
 
@@ -58,42 +90,67 @@ public class CircularProgressView extends View {
 
         super.onDraw(canvas);
 
-        float stroke = 10f;
+        float centerX = getWidth() / 2f;
+        float centerY = getHeight() / 2f;
 
-        float left = stroke;
-        float top = stroke;
-        float right = getWidth() - stroke;
-        float bottom = getHeight() - stroke;
+        float radius =
+                Math.min(
+                        getWidth(),
+                        getHeight()
+                ) / 2f - 20;
 
-        rectF.set(left, top, right, bottom);
+        RectF rect =
+                new RectF(
+                        centerX - radius,
+                        centerY - radius,
+                        centerX + radius,
+                        centerY + radius
+                );
 
-        // Cercle gris foncé
-        paint.setColor(0xFF3A3D40);
-        paint.setStrokeWidth(stroke);
-
+        /*
+         * Cercle gris foncé
+         */
         canvas.drawArc(
-                rectF,
-                0,
+                rect,
+                -90,
                 360,
                 false,
-                paint
+                backgroundPaint
         );
 
-        // Progression verte
-        if (progress > 0) {
+        /*
+         * Progression verte
+         */
+        float sweep =
+                360f * progress / 100f;
 
-            paint.setColor(0xFF20D366);
+        canvas.drawArc(
+                rect,
+                -90,
+                sweep,
+                false,
+                progressPaint
+        );
 
-            float angle =
-                    360f * progress / 100f;
+        /*
+         * Pourcentage au centre
+         */
+        String text =
+                Math.round(progress) + "%";
 
-            canvas.drawArc(
-                    rectF,
-                    -90,
-                    angle,
-                    false,
-                    paint
-            );
-        }
+        Paint.FontMetrics metrics =
+                textPaint.getFontMetrics();
+
+        float baseline =
+                centerY
+                        - (metrics.ascent
+                        + metrics.descent) / 2;
+
+        canvas.drawText(
+                text,
+                centerX,
+                baseline,
+                textPaint
+        );
     }
 }
