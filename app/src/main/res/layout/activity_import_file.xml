@@ -70,8 +70,8 @@
 
                 <ProgressBar
                     android:id="@+id/importProgress"
-                    android:layout_width="130dp"
-                    android:layout_height="130dp"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
                     android:layout_gravity="center"
                     android:max="100"
                     android:progress="0"
@@ -84,7 +84,7 @@
                     android:layout_height="150dp"
                     android:gravity="center"
                     android:text="0 %"
-                    android:textColor="@color/green_primary"
+                    android:textColor="#1677FF"
                     android:textSize="26sp"
                     android:textStyle="bold" />
 
