@@ -5,70 +5,64 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="#FFFFFF"
-    android:padding="22dp">
+    android:padding="18dp">
 
-    <!-- TITRE ARTICLE -->
     <TextView
         android:id="@+id/dialogDesignation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TAMPON"
+        android:text="ARTICLE"
         android:textColor="#20B86B"
-        android:textSize="28sp"
+        android:textSize="21sp"
         android:textStyle="bold"
-        android:paddingBottom="10dp" />
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:paddingBottom="7dp" />
 
-    <!-- RESULTATS -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:maxHeight="480dp">
+        android:maxHeight="430dp">
 
         <TextView
             android:id="@+id/dialogContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#444444"
-            android:textSize="17sp"
-            android:lineSpacingExtra="3dp"
-            android:text="Code SAP : 80004327" />
+            android:textSize="15sp"
+            android:lineSpacingExtra="2dp" />
 
     </ScrollView>
 
-    <!-- SEPARATION -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginBottom="9dp"
         android:background="#AAAAAA" />
 
-    <!-- TOTAL STOCK -->
     <TextView
         android:id="@+id/dialogTotalStock"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="📦  TOTAL EN STOCK : 4.00"
+        android:text="📦  TOTAL EN STOCK : 0.00"
         android:textColor="#20B86B"
-        android:textSize="21sp"
+        android:textSize="17sp"
         android:textStyle="bold"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp" />
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp" />
 
-    <!-- VALEUR GLOBALE -->
     <TextView
         android:id="@+id/dialogGlobalValue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="💰  VALEUR GLOBALE : 164,681.12 MAD"
+        android:text="💰  VALEUR GLOBALE : 0.00 MAD"
         android:textColor="#20B86B"
-        android:textSize="21sp"
+        android:textSize="17sp"
         android:textStyle="bold"
-        android:paddingTop="5dp"
-        android:paddingBottom="15dp" />
+        android:paddingTop="3dp"
+        android:paddingBottom="8dp" />
 
-    <!-- BOUTON FERMER -->
     <Button
         android:id="@+id/dialogClose"
         android:layout_width="wrap_content"
@@ -76,7 +70,7 @@
         android:layout_gravity="end"
         android:text="FERMER"
         android:textColor="#20B86B"
-        android:textSize="17sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         android:backgroundTint="#FFFFFF" />
 
