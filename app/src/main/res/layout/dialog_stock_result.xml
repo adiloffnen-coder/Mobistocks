@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="ARTICLE"
         android:textColor="#20B86B"
-        android:textSize="21sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:maxLines="2"
         android:ellipsize="end"
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:text="📦  TOTAL EN STOCK : 0.00"
         android:textColor="#20B86B"
-        android:textSize="17sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         android:paddingTop="3dp"
         android:paddingBottom="3dp" />
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:text="💰  VALEUR GLOBALE : 0.00 MAD"
         android:textColor="#20B86B"
-        android:textSize="17sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         android:paddingTop="3dp"
         android:paddingBottom="8dp" />
