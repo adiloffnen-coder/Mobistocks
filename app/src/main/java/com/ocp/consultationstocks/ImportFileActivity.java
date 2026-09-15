@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +34,7 @@ public class ImportFileActivity extends Activity {
     private TextView progressStatus;
     private TextView rowsStatus;
 
-    private ProgressBar importProgress;
+    private CircularProgressView importProgress;
 
     private Button importButton;
     private Button selectFileButton;
@@ -47,19 +46,31 @@ public class ImportFileActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_import_file);
 
-        fileNameText = findViewById(R.id.fileNameText);
-        progressPercent = findViewById(R.id.progressPercent);
-        progressStatus = findViewById(R.id.progressStatus);
-        rowsStatus = findViewById(R.id.rowsStatus);
+        fileNameText =
+                findViewById(R.id.fileNameText);
 
-        importProgress = findViewById(R.id.importProgress);
+        progressPercent =
+                findViewById(R.id.progressPercent);
 
-        importButton = findViewById(R.id.importButton);
-        selectFileButton = findViewById(R.id.selectFileButton);
+        progressStatus =
+                findViewById(R.id.progressStatus);
+
+        rowsStatus =
+                findViewById(R.id.rowsStatus);
+
+        importProgress =
+                findViewById(R.id.importProgress);
+
+        importButton =
+                findViewById(R.id.importButton);
+
+        selectFileButton =
+                findViewById(R.id.selectFileButton);
 
         Button cancelButton =
                 findViewById(R.id.cancelButton);
@@ -71,6 +82,7 @@ public class ImportFileActivity extends Activity {
         importButton.setOnClickListener(v -> {
 
             if (selectedFileUri != null) {
+
                 commencerImport();
             }
         });
@@ -129,6 +141,7 @@ public class ImportFileActivity extends Activity {
                 importButton.setEnabled(true);
 
                 importProgress.setProgress(0);
+
                 progressPercent.setText("0 %");
 
                 progressStatus.setText(
@@ -145,9 +158,11 @@ public class ImportFileActivity extends Activity {
     private void commencerImport() {
 
         importButton.setEnabled(false);
+
         selectFileButton.setEnabled(false);
 
         importProgress.setProgress(0);
+
         progressPercent.setText("0 %");
 
         progressStatus.setText(
@@ -158,7 +173,8 @@ public class ImportFileActivity extends Activity {
                 "0 / 0 lignes"
         );
 
-        final Uri uri = selectedFileUri;
+        final Uri uri =
+                selectedFileUri;
 
         executor.execute(() -> {
 
@@ -171,6 +187,7 @@ public class ImportFileActivity extends Activity {
                 runOnUiThread(() -> {
 
                     importButton.setEnabled(true);
+
                     selectFileButton.setEnabled(true);
 
                     progressStatus.setText(
@@ -272,7 +289,9 @@ public class ImportFileActivity extends Activity {
                         parser.getEventType();
 
                 String currentCellReference = null;
+
                 String currentCellType = null;
+
                 String currentValue = "";
 
                 while (
@@ -434,7 +453,10 @@ public class ImportFileActivity extends Activity {
 
             runOnUiThread(() -> {
 
+                // IMPORTANT :
+                // 100 = cercle complètement fermé
                 importProgress.setProgress(100);
+
                 progressPercent.setText("100 %");
 
                 rowsStatus.setText(
@@ -449,6 +471,7 @@ public class ImportFileActivity extends Activity {
                 );
 
                 importButton.setEnabled(true);
+
                 selectFileButton.setEnabled(true);
 
                 Toast.makeText(
@@ -462,6 +485,7 @@ public class ImportFileActivity extends Activity {
         } finally {
 
             if (tempFile.exists()) {
+
                 tempFile.delete();
             }
         }
@@ -471,32 +495,65 @@ public class ImportFileActivity extends Activity {
             StockDatabaseHelper db,
             ArrayList<String> row) {
 
-        String codeSap = get(row, 0);
-        String codeOcp = get(row, 1);
-        String description = get(row, 2);
-        String numeroMagasin = get(row, 3);
-        String division = get(row, 4);
-        String magasin = get(row, 5);
-        String bin = get(row, 6);
-        String typeMagasin = get(row, 7);
+        String codeSap =
+                get(row, 0);
+
+        String codeOcp =
+                get(row, 1);
+
+        String description =
+                get(row, 2);
+
+        String numeroMagasin =
+                get(row, 3);
+
+        String division =
+                get(row, 4);
+
+        String magasin =
+                get(row, 5);
+
+        String bin =
+                get(row, 6);
+
+        String typeMagasin =
+                get(row, 7);
 
         double quantite =
-                convertirDouble(get(row, 8));
+                convertirDouble(
+                        get(row, 8)
+                );
 
-        String unite = get(row, 9);
-        String typeStock = get(row, 10);
-        String designationTypeStock = get(row, 11);
-        String groupeValorisation = get(row, 12);
+        String unite =
+                get(row, 9);
+
+        String typeStock =
+                get(row, 10);
+
+        String designationTypeStock =
+                get(row, 11);
+
+        String groupeValorisation =
+                get(row, 12);
 
         double prix =
-                convertirDouble(get(row, 13));
+                convertirDouble(
+                        get(row, 13)
+                );
 
         double valeur =
-                convertirDouble(get(row, 14));
+                convertirDouble(
+                        get(row, 14)
+                );
 
-        String devise = get(row, 15);
-        String dateEm = get(row, 16);
-        String derniereSortie = get(row, 17);
+        String devise =
+                get(row, 15);
+
+        String dateEm =
+                get(row, 16);
+
+        String derniereSortie =
+                get(row, 17);
 
         db.insertStock(
                 codeSap,
@@ -528,10 +585,12 @@ public class ImportFileActivity extends Activity {
                 index < 0
                         || index >= row.size()
         ) {
+
             return "";
         }
 
-        String value = row.get(index);
+        String value =
+                row.get(index);
 
         return value == null
                 ? ""
@@ -545,6 +604,7 @@ public class ImportFileActivity extends Activity {
                 value == null
                         || value.trim().isEmpty()
         ) {
+
             return 0;
         }
 
@@ -555,7 +615,9 @@ public class ImportFileActivity extends Activity {
                             .replace(" ", "")
                             .replace(",", ".");
 
-            return Double.parseDouble(propre);
+            return Double.parseDouble(
+                    propre
+            );
 
         } catch (Exception e) {
 
@@ -605,6 +667,7 @@ public class ImportFileActivity extends Activity {
         output.flush();
 
         output.close();
+
         input.close();
     }
 
@@ -664,6 +727,7 @@ public class ImportFileActivity extends Activity {
                 ) {
 
                     count++;
+
                     position += 4;
                 }
             }
@@ -694,11 +758,14 @@ public class ImportFileActivity extends Activity {
                 );
 
         if (entry == null) {
+
             return result;
         }
 
         InputStream input =
-                zipFile.getInputStream(entry);
+                zipFile.getInputStream(
+                        entry
+                );
 
         XmlPullParserFactory factory =
                 XmlPullParserFactory.newInstance();
@@ -740,6 +807,7 @@ public class ImportFileActivity extends Activity {
                 ) {
 
                     text.setLength(0);
+
                     insideSi = true;
 
                 } else if (
@@ -772,6 +840,7 @@ public class ImportFileActivity extends Activity {
                     );
 
                     index++;
+
                     insideSi = false;
                 }
             }
@@ -791,6 +860,7 @@ public class ImportFileActivity extends Activity {
             Map<String, String> sharedStrings) {
 
         if (value == null) {
+
             return "";
         }
 
@@ -814,6 +884,7 @@ public class ImportFileActivity extends Activity {
                 reference == null
                         || reference.isEmpty()
         ) {
+
             return 0;
         }
 
